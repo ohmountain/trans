@@ -1,0 +1,15 @@
+api_homepage:
+    path:     /
+    defaults: { _controller: ApiBundle:Default:index }
+
+
+api_get_info:
+    path:    /api/v1/cx_list
+    defaults: { _controller: ApiBundle:Api:getInfo }
+    methods: GET
+
+
+api_get_example:
+    path:    /api/v1/example
+    defaults: { _controller: ApiBundle:Api:example }
+    methods: GET
