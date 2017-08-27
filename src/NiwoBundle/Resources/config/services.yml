@@ -1,0 +1,4 @@
+services:
+   niwo.zhimi:
+       class: NiwoBundle\Service\Zhimi
+       # arguments: ["@service_id", "plain_value", "%parameter%"]

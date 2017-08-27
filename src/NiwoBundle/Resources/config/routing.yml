@@ -1,0 +1,3 @@
+zhimi_api:
+    path:     /zhimi
+    defaults: { _controller: NiwoBundle:Zhimi:index }
