@@ -5,6 +5,9 @@ namespace NiwoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use RandBuilder\Builder;
+use NiwoBundle\Entity\Person;
+use NiwoBundle\Entity\Portrait;
 
 class ZhimiController extends Controller
 {
@@ -48,4 +51,5 @@ class ZhimiController extends Controller
 
         return $zhimi_service->handleRequestData($json_data);
     }
+
 }

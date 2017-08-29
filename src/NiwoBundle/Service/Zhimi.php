@@ -3,9 +3,17 @@
 namespace NiwoBundle\Service;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManager;
 
 class Zhimi
 {
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     public function handleRequestData(array $request_data): JsonResponse
     {
         $response = new JsonResponse();
@@ -28,10 +36,10 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 10])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
-                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5]"
+                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 10]"
             ]));
 
             return $response;
@@ -74,29 +82,28 @@ class Zhimi
          * ret_code 40700
          */
         if (!array_key_exists("id_type", $parameter) ||
-            !array_key_exists("id_hash", $parameter) ||
-            !array_key_exists("sig", $parameter)
+            !array_key_exists("id", $parameter)
         ) {
             $response->setContent(json_encode([
                 "ret_code" => 40700,
-                "reason_string" => "参数不全,需要id_type、id_hash、sig",
+                "reason_string" => "参数不全,需要id_type、id、sig(可选)",
             ]));
 
             return $response;
         }
 
-        $id_type = $parameter["id_type"];
-        $id_hash = $parameter["id_hash"];
-        $sig     = $parameter["sig"];
+        $id= $parameter["id"] ?? null;
+        $id_type = $parameter["id_type"] ?? null;
+        $sig     = $parameter["sig"] ?? null;
 
         /**
          * 参数不能为空
          * ret_code 40800
          */
-        if (empty($id_hash) || empty($id_type) || empty($sig)) {
+        if (empty($id) || empty($id_type)) {
             $response->setContent(json_encode([
                 "ret_code" => 40800,
-                "reason_string" => "注册参数不能为空",
+                "reason_string" => "参数不能为空",
             ]));
 
             return $response;
@@ -117,24 +124,24 @@ class Zhimi
         }
 
         /**
-         * 获取三变信息
+         * 获取农村三变土地确权证信息
          */
         if ($op_type == 3) {
-            return $this->sanbian($parameter);
+            return $this->landRights($parameter);
         }
 
         /**
-         * 获取产权信息
+         * 获取农村三变林权证信息
          */
         if ($op_type == 4) {
             return $this->chanquan($parameter);
         }
 
         /**
-         * 是否取得社会救助
+         * 获取农村房屋产权信息
          */
         if ($op_type == 5) {
-            return $this->jiuzhu($parameter);
+            return $this->housingPropertyRights($parameter);
         }
 
     }
@@ -211,7 +218,26 @@ class Zhimi
         return $response;
     }
 
-    private function sanbian(array $parameter): JsonResponse
+    /**
+     * 三变土地确权
+     *
+     * @param array $parameter
+     *
+     * @return JsonResponse
+     */
+    private function landRights(array $parameter): JsonResponse
+    {
+        
+    }
+
+    /**
+     * 三变房屋产权
+     *
+     * @param array $parameter
+     *
+     * @return JsonResponse
+     */
+    private function housingPropertyRights(array $parameter): JsonResponse
     {
 
         $response = new JsonResponse();
@@ -222,37 +248,51 @@ class Zhimi
          * 2. 可能获取失败
          */
 
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? null;
+
+
+        $rep = $this->em->getRepository("NiwoBundle\Entity\HousingPropertyRights");
+
+        $rights = $rep->findByOwnerId($id);
+
+        if ($rights === null) {
+            $response->setContent(json_encode([
+                "ret_value" => 1,
+                "value" => null,
+                "reason_string" => "无数据"
+            ]));
+
+            return $response;
+        }
+
+
         /**
          * 假设获取成功
          * ret_code 20200
          */
         $response->setContent(json_encode([
-            "ret_code" => 20200,
+            "ret_value" => 0,
             "value" => [
-                "hash" => md5(uniqid()),
-                "type" => 1,
-                "ownership" => [[
-                    "onwer_id" => md5(uniqid()),
-                    "onwer_name" => "王二麻子",
-                    "sid" => "522900190001010909",
-                    "spouse_name" => "王二麻子的媳妇",
-                    "family_member" => 4,
-                    "county_name" => "某个乡镇",
-                    "group" => 1,
-                    "land_owner" => "王二麻子",
-                    "cons_time" => (new \DateTime()),
-                    "floor_number" => 3,
-                    "layout" => "结构非常好",
-                    "land_area" => 100,
-                    "confirmed_area" => 100,
-                    "east" => "东海",
-                    "south" => "南海",
-                    "west" => "西太平洋",
-                    "north" => "北冰洋",
-                    "comments" => "备注",
-                    "input" => "我"
-                ]]
-            ]
+                "hash" => $rights->getOwnerIdHash(),
+                "ownership" => [
+                    "address" => $rights->getAddress(),
+                    "comm_name" => $rights->getCommName(),
+                    "comm_pp_name" => $rights->getCommPpName(),
+                    "east" => $rights->getEast(),
+                    "south" => $rights->getSouth(),
+                    "east" => $rights->getEast(),
+                    "west" => $rights->getWest(),
+                    "construct_area" => $rights->getConstructionArea(),
+                    "house_area" => $rights->getHouseArea(),
+                    "house_style" => $rights->getHouseStyle(),
+                    "owner_name" => $rights->getOwnerName(),
+                    "authorized_date" => $rights->getAuthorizedDate(),
+                    "authorized_dept" => $rights->getAuthorizedDept()
+                ]
+            ],
+            "ret_string" => "获取成功"
         ]));
 
         return $response;
