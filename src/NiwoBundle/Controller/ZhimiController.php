@@ -52,4 +52,8 @@ class ZhimiController extends Controller
         return $zhimi_service->handleRequestData($json_data);
     }
 
+    public function gAction()
+    {
+        dump($this->get('niwo.zhimi')->isRegistered("1111232"));
+    }
 }

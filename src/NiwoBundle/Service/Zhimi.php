@@ -3,15 +3,19 @@
 namespace NiwoBundle\Service;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
+use Curl\Curl;
 
 class Zhimi
 {
     private $em;
+    private $container;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
+        $this->container = $container;
     }
 
     public function handleRequestData(array $request_data): JsonResponse
@@ -153,7 +157,7 @@ class Zhimi
      *
      * @return JsonResponse
      */
-    private function register(array $request_data)
+    private function register(array $parameter): JsonResponse
     {
 
         $response = new JsonResponse();
@@ -165,20 +169,112 @@ class Zhimi
          * 3. 可能已被注册
          */
 
+        $id = $parameter['id'];
+
+        $curl = new Curl();
+        $url  = $this->container->getParameter('niwo')['chain']['register_api'];
+        $url  = "{$url}/{$id}";
+
+        $result = $curl->get($url);
+
+        /**
+         * 网络请求错误
+         * ret_code 0
+         */
+        if ($result->error || $result->http_error) {
+
+            $response->setContent(json_encode([
+                "ret_code" => 500,
+                "value" => null,
+                "reason_string" => "注册请求网络错误"
+            ]));
+
+            return $response;
+        }
+
+        $data= json_decode($result->response, true);
+
+        if ($data["Error"] !== 0 || $data["Result"] == null) {
+            $response->setContent(json_encode([
+                "ret_code" => 400,
+                "value" => null,
+                "reason_string" => "注册失败"
+            ]));
+
+            return $response;
+        }
+
         /**
          * 假设注册成功
-         * ret_code 20200
+         * ret_code 0
          */
         $response->setContent(json_encode([
-            "ret_code" => 20200,
+            "ret_code" => 0,
             "value" => [
-                "bc_id" => md5(uniqid())
-            ]
+                "bc_id" => $data["Result"]["did"],
+                "state" => $data["Result"]["state"]
+            ],
+            "reason_string" => "注册完成"
         ]));
 
         return $response;
     }
 
+    private function registerStatus(string $id): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $id   = $parameter['id'];
+        $hash = hash("sha256", hash("sha256", $id));
+
+        $curl = new Curl();
+        $url  = $this->container->getParameter('niwo')['chain']['status_api'];
+        $url  = "{$url}/{$hash}";
+
+        $result = $curl->get($url);
+
+        /**
+         * 网络请求错误
+         * ret_code 0
+         */
+        if ($result->error || $result->http_error) {
+
+            $response->setContent(json_encode([
+                "ret_code" => 500,
+                "value" => null,
+                "reason_string" => "注册请求网络错误"
+            ]));
+
+            return $response;
+        }
+
+        $data= json_decode($result->response, true);
+
+        if ($data["Error"] !== 0 || $data["Result"] == null) {
+            $response->setContent(json_encode([
+                "ret_code" => 400,
+                "value" => null,
+                "reason_string" => "查询失败"
+            ]));
+
+            return $response;
+        }
+
+        /**
+         * 假设查询成功
+         * ret_code 0
+         */
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "bc_id" => $data["Result"]["did"],
+                "state" => $data["Result"]["state"]
+            ],
+            "reason_string" => "查询完成"
+        ]));
+
+        return $response;
+    }
 
     /**
      * 处理获取诚信信息请求
@@ -227,7 +323,22 @@ class Zhimi
      */
     private function landRights(array $parameter): JsonResponse
     {
-        
+        $response = new JsonResponse();
+
+        /**
+         * TODO
+         * 1. 执行正常的获取逻辑
+         * 2. 可能获取失败
+         */
+
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? null;
+
+
+        $rep = $this->em->getRepository("NiwoBundle\Entity\WoollandRights");
+
+        $rights = $rep->findByOwnerId($id);
     }
 
     /**
@@ -268,29 +379,36 @@ class Zhimi
         }
 
 
+        $value = [];
+
+        foreach ($rights as $right) {
+            $r = [
+                "address" => $rights->getAddress(),
+                "comm_name" => $rights->getCommName(),
+                "comm_pp_name" => $rights->getCommPpName(),
+                "east" => $rights->getEast(),
+                "south" => $rights->getSouth(),
+                "east" => $rights->getEast(),
+                "west" => $rights->getWest(),
+                "construct_area" => $rights->getConstructionArea(),
+                "house_area" => $rights->getHouseArea(),
+                "house_style" => $rights->getHouseStyle(),
+                "owner_name" => $rights->getOwnerName(),
+                "authorized_date" => $rights->getAuthorizedDate(),
+                "authorized_dept" => $rights->getAuthorizedDept()
+            ];
+
+            array_push($value, $r);
+        }
+
         /**
          * 假设获取成功
-         * ret_code 20200
          */
         $response->setContent(json_encode([
             "ret_value" => 0,
             "value" => [
                 "hash" => $rights->getOwnerIdHash(),
-                "ownership" => [
-                    "address" => $rights->getAddress(),
-                    "comm_name" => $rights->getCommName(),
-                    "comm_pp_name" => $rights->getCommPpName(),
-                    "east" => $rights->getEast(),
-                    "south" => $rights->getSouth(),
-                    "east" => $rights->getEast(),
-                    "west" => $rights->getWest(),
-                    "construct_area" => $rights->getConstructionArea(),
-                    "house_area" => $rights->getHouseArea(),
-                    "house_style" => $rights->getHouseStyle(),
-                    "owner_name" => $rights->getOwnerName(),
-                    "authorized_date" => $rights->getAuthorizedDate(),
-                    "authorized_dept" => $rights->getAuthorizedDept()
-                ]
+                "ownership" => $value
             ],
             "ret_string" => "获取成功"
         ]));

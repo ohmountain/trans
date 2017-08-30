@@ -1,4 +1,4 @@
 services:
    niwo.zhimi:
        class: NiwoBundle\Service\Zhimi
-       arguments: ["@doctrine.orm.default_entity_manager"]
+       arguments: ['@doctrine.orm.default_entity_manager', '@service_container']
