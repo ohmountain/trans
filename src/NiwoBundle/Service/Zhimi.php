@@ -341,6 +341,8 @@ class Zhimi
         $rep = $this->em->getRepository("NiwoBundle\Entity\WoollandRights");
 
         $rights = $rep->findByOwnerId($id);
+
+        return $response;
     }
 
     /**
