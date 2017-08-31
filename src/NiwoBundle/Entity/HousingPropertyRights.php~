@@ -528,4 +528,3 @@ class HousingPropertyRights
         return $this->authorizedDept;
     }
 }
-

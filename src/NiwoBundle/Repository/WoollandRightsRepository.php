@@ -14,6 +14,6 @@ class WoollandRightsRepository extends \Doctrine\ORM\EntityRepository
     {
         $result = $this->findBy(["ownerId" => $owner_id]);
 
-        return count($result) > 0 ? $result ?? null;
+        return count($result) > 0 ? $result : null;
     }
 }
