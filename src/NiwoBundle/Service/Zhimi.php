@@ -301,11 +301,11 @@ class Zhimi
          * ret_code 20200
          */
         $response->setContent(json_encode([
-            "ret_code" => 20200,
+            "ret_code" => 0,
             "value" => [
                 "hash" => md5(uniqid()),
                 "history" => [[
-                    "timestamp" => time(),
+                    "timestamp" => "200610010909",
                     "name" => "谁？",
                     "place" => "哪个？",
                     "content" => "发生了什么?"
@@ -341,6 +341,45 @@ class Zhimi
         $rep = $this->em->getRepository("NiwoBundle\Entity\WoollandRights");
 
         $rights = $rep->findByOwnerId($id);
+
+        if ($rights === null) {
+            $response->setContent(json_encode([
+                'code' => 0,
+                'value' => null,
+                'reason_string' => "无数据"
+            ]));
+
+            return $response;
+        }
+
+        $data = [];
+
+        foreach ($rights as $right) {
+            array_push($data, [
+                "contry_name" => $right->getContryName(),
+                "comm_name" => $right->getCommName(),
+                "comm_pp_name" => $right->getCommPpName(),
+                "owner_name" => $right->getOwnerName(),
+                "east" => $right->getEast(),
+                "south" => $right->getSouth(),
+                "west" => $right->getWest(),
+                "north" => $right->getNorth(),
+                "woolland_id" => $right->getWoollandId(),
+                "land_name" => $right->getLandName(),
+                "tree_type" => $right->getTreeType(),
+                "valid" => $right->getValid(),
+                "authorized_date" => $right->getAuthorizedDate(),
+                "processor" => $right->getProcessor()
+            ]);
+        }
+
+        $response->setContent(json_encode([
+            'code' => 0,
+            'value' => [
+                'hash' => hash("sha256", hash("sha256", $id)),
+                "ownership" => $data
+            ]
+        ]));
 
         return $response;
     }
