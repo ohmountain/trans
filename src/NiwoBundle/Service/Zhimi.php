@@ -172,7 +172,8 @@ class Zhimi
         $id = $parameter['id'];
 
         $curl = new Curl();
-        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
+        // $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
+        $curl->setOpt(CURLOPT_TIMEOUT, 10);
         $url  = $this->container->getParameter('niwo')['chain']['register_api'];
         $url  = "{$url}/{$id}";
 
