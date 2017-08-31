@@ -19,8 +19,10 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->arrayNode('chain')->children()
-            ->scalarNode("register_api")->isRequired()->end()
-            ->scalarNode("status_api")->isRequired()->end();
+                ->scalarNode("register_api")->isRequired()->end()
+                ->scalarNode("status_api")->isRequired()->end()
+                ->integerNode("timeout")->min(1)->max(20)->end()
+            ->end();
 
         return $treeBuilder;
     }

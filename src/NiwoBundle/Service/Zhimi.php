@@ -172,7 +172,7 @@ class Zhimi
         $id = $parameter['id'];
 
         $curl = new Curl();
-        $curl->setOpt(CURLOPT_TIMEOUT, 10);
+        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
         $url  = $this->container->getParameter('niwo')['chain']['register_api'];
         $url  = "{$url}/{$id}";
 
@@ -229,7 +229,7 @@ class Zhimi
         $hash = hash("sha256", hash("sha256", $id));
 
         $curl = new Curl();
-        $curl->setOpt(CURLOPT_TIMEOUT, 10);
+        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
         $url  = $this->container->getParameter('niwo')['chain']['status_api'];
         $url  = "{$url}/{$hash}";
 
