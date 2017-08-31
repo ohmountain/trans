@@ -14,13 +14,13 @@ class HousingPropertyRightsRepository extends \Doctrine\ORM\EntityRepository
     {
         $result = $this->findBy(["ownerId" => $owner_id]);
 
-        return count($result) > 0 ? $result ?? null;
+        return count($result) > 0 ? $result : null;
     }
 
     public function findByOwnerIdHash(string $owner_id_hash)
     {
         $result = $this->findBy(["owner_id_hash" => $owner_id_hash]);
 
-        return count($result) > 0 ? $result ?? null;
+        return count($result) > 0 ? $result : null;
     }
 }
