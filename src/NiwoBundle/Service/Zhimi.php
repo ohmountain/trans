@@ -187,6 +187,7 @@ class Zhimi
             $response->setContent(json_encode([
                 "ret_code" => 500,
                 "value" => null,
+                "timeout" => $this->container->getParameter('niwo')['chain']['timeout'],
                 "reason_string" => "注册请求网络错误"
             ]));
 
