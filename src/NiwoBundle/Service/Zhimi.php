@@ -172,8 +172,7 @@ class Zhimi
         $id = $parameter['id'];
 
         $curl = new Curl();
-        // $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
-        $curl->setOpt(CURLOPT_TIMEOUT, 10);
+        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
         $url  = $this->container->getParameter('niwo')['chain']['register_api'];
         $url  = "{$url}/{$id}";
 
@@ -188,7 +187,6 @@ class Zhimi
             $response->setContent(json_encode([
                 "ret_code" => 500,
                 "value" => null,
-                "timeout" => $this->container->getParameter('niwo')['chain']['timeout'],
                 "reason_string" => "注册请求网络错误"
             ]));
 
