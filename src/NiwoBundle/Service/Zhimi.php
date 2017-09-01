@@ -483,7 +483,7 @@ class Zhimi
          * ret_code 20200
          */
         $response->setContent(json_encode([
-            "ret_code" => 20200,
+            "ret_code" => 0,
             "value" => [
                 "type" => 2,
                 "hash" => md5(uniqid()),
