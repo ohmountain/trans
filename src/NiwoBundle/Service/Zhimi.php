@@ -460,6 +460,33 @@ class Zhimi
         $id      = $parameter["id"];
         $sig     = $parameter["sig"] ?? null;
 
+        // 虚假数据，用于开发
+        $data = [[
+            "address" => "贵阳市-花溪区-石板镇",
+            "comm_name" => "xxx村民委员会",
+            "comm_pp_name" => "xx组",
+            "east" => "防火墙",
+            "south" => "池塘",
+            "west" => "农田",
+            "north" => "公路",
+            "construction_area" => "123.23",
+            "house_area" => "234.02",
+            "owner_name" => "张三",
+            "house_style" => "砖瓦",
+            "authorized_date" => "20031020",
+            "authorized_dept" => "贵阳市房产局"
+        ]];
+
+        $response->setContent(json_encode([
+            'ret_code' => 0,
+            'value' => [
+                'hash' => hash('sha256', hash('sha256', '1')),
+                'ownership' => $data
+            ],
+            'reason_string' => '获取成功'
+        ]));
+
+        return $response;
 
         $rep = $this->em->getRepository("NiwoBundle\Entity\HousingPropertyRights");
 
