@@ -72,7 +72,7 @@ class Zhimi
          */
         if (!is_array($request_data["parameter"])) {
             $response->setContent(json_encode([
-                "ret_code" => 40600,
+                "ret_code" => 5,
                 "reason_string" => "参数格式错误",
             ]));
 
@@ -80,6 +80,24 @@ class Zhimi
         }
 
         $parameter = $request_data["parameter"];
+
+        if (!array_key_exists("id", $parameter)) {
+            $response->setContent(json_encode([
+                "ret_code" => 1,
+                "reason_string" => "id 异常",
+            ]));
+
+            return $response;
+        }
+
+        if (!array_key_exists("id_type", $parameter)) {
+            $response->setContent(json_encode([
+                "ret_code" => 2,
+                "reason_string" => "id_type 异常",
+            ]));
+
+            return $response;
+        }
 
         /**
          * 参数不全
@@ -308,8 +326,119 @@ class Zhimi
                 "history" => [
                     [
                         "category" => "金融信用",
-
-                    ]
+                        "history"  => [
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市花溪区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市白云区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市清镇",
+                                "content" => "xxxxxxxxxxxxx"
+                            ]
+                        ]
+                    ],
+                    [
+                        "category" => "公共服务",
+                        "history"  => [
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市花溪区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市白云区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市清镇",
+                                "content" => "xxxxxxxxxxxxx"
+                            ]
+                        ]
+                    ],
+                    [
+                        "category" => "公共信用",
+                        "history"  => [
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市花溪区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市白云区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市清镇",
+                                "content" => "xxxxxxxxxxxxx"
+                            ]
+                        ]
+                    ],
+                    [
+                        "category" => "司法信用",
+                        "history"  => [
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市花溪区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市白云区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市清镇",
+                                "content" => "xxxxxxxxxxxxx"
+                            ]
+                        ]
+                    ],
+                    [
+                        "category" => "其他",
+                        "history"  => [
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市花溪区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市白云区",
+                                "content" => "xxxxxxxxxxxxx"
+                            ],
+                            [
+                                "timestamp" => "20170101101326",
+                                "name" => "张三",
+                                "place" => "贵阳市清镇",
+                                "content" => "xxxxxxxxxxxxx"
+                            ]
+                        ]
+                    ],
                 ]
             ]
         ]));
