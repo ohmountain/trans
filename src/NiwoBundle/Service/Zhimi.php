@@ -492,6 +492,14 @@ class Zhimi
                             "block_no" => "1234343555",
                             "block_coordinate" => "x24534342.120,Y34343434.309",
                             "block_shape" => "方形"
+                        ],
+                        [
+                            "block_name" => "地块2",
+                            "block_area" => "23.123",
+                            "block_type" => "地",
+                            "block_no" => "1984343555",
+                            "block_coordinate" => "x24534345.120,Y34343454.309",
+                            "block_shape" => "正圆形"
                         ]
                     ]
                 ],

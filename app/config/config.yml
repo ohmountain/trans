@@ -76,8 +76,9 @@ niwo:
     # 身份链
     chain:
         # 注册API
-        register_api: http://192.168.43.84:8082/api/v1/identityupdate/registry/institution/gyi
+        # register_api: http://192.168.43.84:8082/api/v1/identityupdate/registry/institution/gyi
+        register_api: http://54.222.240.78:9080/api/v1/identityupdate/registry/individual/gyi
         # 查询注册状态API
-        status_api:   http://192.168.43.84:8082/identityservice/v1/identityupdate/query
+        status_api:   http://54.222.240.78:9080/identityservice/v1/identityupdate/query
         # 请求超时时间(秒)
         timeout: 10
