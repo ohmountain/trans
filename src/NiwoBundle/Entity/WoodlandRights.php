@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WoollandRights
  *
- * @ORM\Table(name="woolland_rights")
- * @ORM\Entity(repositoryClass="NiwoBundle\Repository\WoollandRightsRepository")
+ * @ORM\Table(name="woodland_rights")
+ * @ORM\Entity(repositoryClass="NiwoBundle\Repository\WoodlandRightsRepository")
  */
-class WoollandRights
+class WoodlandRights
 {
     /**
      * @var int
@@ -45,9 +45,9 @@ class WoollandRights
     /**
      * @var string
      *
-     * @ORM\Column(name="contry_name", type="string", length=255, options={"comments": "乡镇"})
+     * @ORM\Column(name="country_name", type="string", length=255, options={"comments": "乡镇"})
      */
-    private $contryName;
+    private $countryName;
 
     /**
      * @var string
@@ -232,27 +232,27 @@ class WoollandRights
     }
 
     /**
-     * Set contryName
+     * Set countryName
      *
-     * @param string $contryName
+     * @param string $countryName
      *
      * @return WoollandRights
      */
-    public function setContryName($contryName)
+    public function setCountryName($countryName)
     {
-        $this->contryName = $contryName;
+        $this->countryName = $countryName;
 
         return $this;
     }
 
     /**
-     * Get contryName
+     * Get countryName
      *
      * @return string
      */
-    public function getContryName()
+    public function getCountryName()
     {
-        return $this->contryName;
+        return $this->countryName;
     }
 
     /**

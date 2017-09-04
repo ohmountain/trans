@@ -170,6 +170,7 @@ class Zhimi
          */
 
         $id = $parameter['id'];
+        $id = hash("sha256", hash("sha256", $id));
 
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
@@ -304,12 +305,12 @@ class Zhimi
             "ret_code" => 0,
             "value" => [
                 "hash" => md5(uniqid()),
-                "history" => [[
-                    "timestamp" => "200610010909",
-                    "name" => "谁？",
-                    "place" => "哪个？",
-                    "content" => "发生了什么?"
-                ]]
+                "history" => [
+                    [
+                        "category" => "金融信用",
+
+                    ]
+                ]
             ]
         ]));
 
@@ -392,7 +393,7 @@ class Zhimi
         $sig     = $parameter["sig"] ?? null;
 
 
-        $rep = $this->em->getRepository("NiwoBundle\Entity\WoollandRights");
+        $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
 
         $rights = $rep->findByOwnerId($id);
 
@@ -410,7 +411,7 @@ class Zhimi
 
         foreach ($rights as $right) {
             array_push($data, [
-                "contry_name" => $right->getContryName(),
+                "country_name" => $right->getCountryName(),
                 "comm_name" => $right->getCommName(),
                 "comm_pp_name" => $right->getCommPpName(),
                 "owner_name" => $right->getOwnerName(),
@@ -418,7 +419,8 @@ class Zhimi
                 "south" => $right->getSouth(),
                 "west" => $right->getWest(),
                 "north" => $right->getNorth(),
-                "woolland_id" => $right->getWoollandId(),
+                "woodland_id" => $right->getWoodlandId(),
+                "map_author" => $right->getMapAuthor(),
                 "land_name" => $right->getLandName(),
                 "tree_type" => $right->getTreeType(),
                 "valid" => $right->getValid(),
