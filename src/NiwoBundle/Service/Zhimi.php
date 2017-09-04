@@ -206,7 +206,8 @@ class Zhimi
             $response->setContent(json_encode([
                 "ret_code" => 500,
                 "value" => null,
-                "reason_string" => "注册请求网络错误"
+                "reason_string" => "注册请求网络错误",
+                "error_details" => $result
             ]));
 
             return $response;
