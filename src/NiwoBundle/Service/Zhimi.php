@@ -317,7 +317,7 @@ class Zhimi
 
         /**
          * 假设获取成功
-         * ret_code 20200
+         * ret_code 0
          */
         $response->setContent(json_encode([
             "ret_code" => 0,
