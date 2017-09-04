@@ -471,26 +471,30 @@ class Zhimi
         $data = [
             'ret_code' => 0,
             'value' => [
-                "comm_name" => "xxx村民委员会",
-                "comm_pp_name" => "xx组",
-                "owner_id" => "245358464696969",
-                "owner_name" => "张三",
-                "owner_gender" => "男",
-                "owner_sid" => "309210920102301230",
-                "family_name" => "李四",
-                "family_gender" => "女",
-                "family_sid" => "309210920102303434",
-                "relationship" =>"夫妻",
-                "block" => [
-                    [
-                        "block_name" => "地块1",
-                        "block_area" => "123.23",
-                        "block_type" => "田",
-                        "block_no" => "1234343555",
-                        "block_coordinate" => "x24534342.120,Y34343434.309",
-                        "block_shape" => "方形"
+                "hash" => hash("sha256", hash("sha256", "1")),
+                "ownership" => [
+
+                    "comm_name" => "xxx村民委员会",
+                    "comm_pp_name" => "xx组",
+                    "owner_id" => "245358464696969",
+                    "owner_name" => "张三",
+                    "owner_gender" => "男",
+                    "owner_sid" => "309210920102301230",
+                    "family_name" => "李四",
+                    "family_gender" => "女",
+                    "family_sid" => "309210920102303434",
+                    "relationship" =>"夫妻",
+                    "block" => [
+                        [
+                            "block_name" => "地块1",
+                            "block_area" => "123.23",
+                            "block_type" => "田",
+                            "block_no" => "1234343555",
+                            "block_coordinate" => "x24534342.120,Y34343434.309",
+                            "block_shape" => "方形"
+                        ]
                     ]
-                ]
+                ],
             ],
             'reason_string' => '获取成功'
         ];
