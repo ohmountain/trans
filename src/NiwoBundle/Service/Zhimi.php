@@ -156,7 +156,7 @@ class Zhimi
          * 获取农村三变林权证信息
          */
         if ($op_type == 4) {
-            return $this->woollandRights($parameter);
+            return $this->woodlandRights($parameter);
         }
 
         /**
@@ -511,7 +511,7 @@ class Zhimi
      *
      * @return JsonResponse
      */
-    private function woollandRights(array $parameter): JsonResponse
+    private function woodlandRights(array $parameter): JsonResponse
     {
         $response = new JsonResponse();
 
