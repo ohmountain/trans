@@ -216,9 +216,9 @@ class Zhimi
 
         if ($data["Error"] !== 0 || $data["Result"] == null) {
             $response->setContent(json_encode([
-                "ret_code" => 400,
+                "ret_code" => 4,
                 "value" => null,
-                "reason_string" => "注册失败"
+                "reason_string" => "证件号已注册"
             ]));
 
             return $response;
