@@ -207,8 +207,6 @@ class Zhimi
                 "ret_code" => 500,
                 "value" => null,
                 "reason_string" => "注册请求网络错误",
-                "error_details" => $result->error_message,
-                "url" => $url
             ]));
 
             return $response;
