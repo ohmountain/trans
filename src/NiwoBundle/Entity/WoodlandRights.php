@@ -5,7 +5,7 @@ namespace NiwoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * WoollandRights
+ * WoodlandRights
  *
  * @ORM\Table(name="woodland_rights")
  * @ORM\Entity(repositoryClass="NiwoBundle\Repository\WoodlandRightsRepository")
@@ -94,10 +94,10 @@ class WoodlandRights
     /**
      * @var string
      *
-     * @ORM\Column(name="woolland_id", type="string", options={"comments": "林地编号"})
+     * @ORM\Column(name="woodland_id", type="string", options={"comments": "林地编号"})
      */
 
-    private $woollandId;
+    private $woodlandId;
     /**
      * @var float
      *
@@ -164,7 +164,7 @@ class WoodlandRights
      *
      * @param string $ownerId
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setOwnerId($ownerId)
     {
@@ -188,7 +188,7 @@ class WoodlandRights
      *
      * @param string $ownerIdHash
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setOwnerIdHash($ownerIdHash)
     {
@@ -212,7 +212,7 @@ class WoodlandRights
      *
      * @param string $ownerName
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setOwnerName($ownerName)
     {
@@ -236,7 +236,7 @@ class WoodlandRights
      *
      * @param string $countryName
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setCountryName($countryName)
     {
@@ -260,7 +260,7 @@ class WoodlandRights
      *
      * @param string $commName
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setCommName($commName)
     {
@@ -284,7 +284,7 @@ class WoodlandRights
      *
      * @param string $commPpName
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setCommPpName($commPpName)
     {
@@ -308,7 +308,7 @@ class WoodlandRights
      *
      * @param string $east
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setEast($east)
     {
@@ -332,7 +332,7 @@ class WoodlandRights
      *
      * @param string $south
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setSouth($south)
     {
@@ -356,7 +356,7 @@ class WoodlandRights
      *
      * @param string $west
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setWest($west)
     {
@@ -380,7 +380,7 @@ class WoodlandRights
      *
      * @param string $north
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setNorth($north)
     {
@@ -400,27 +400,27 @@ class WoodlandRights
     }
 
     /**
-     * Set woollandId
+     * Set woodlandId
      *
-     * @param string $woollandId
+     * @param string $woodlandId
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
-    public function setWoollandId($woollandId)
+    public function setWoodlandId($woodlandId)
     {
-        $this->woollandId = $woollandId;
+        $this->woodlandId = $woodlandId;
 
         return $this;
     }
 
     /**
-     * Get woollandId
+     * Get woodlandId
      *
      * @return string
      */
-    public function getWoollandId()
+    public function getWoodlandId()
     {
-        return $this->woollandId;
+        return $this->woodlandId;
     }
 
     /**
@@ -428,7 +428,7 @@ class WoodlandRights
      *
      * @param float $area
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setArea($area)
     {
@@ -452,7 +452,7 @@ class WoodlandRights
      *
      * @param string $mapAuthor
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setMapAuthor($mapAuthor)
     {
@@ -476,7 +476,7 @@ class WoodlandRights
      *
      * @param string $landName
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setLandName($landName)
     {
@@ -500,7 +500,7 @@ class WoodlandRights
      *
      * @param string $treeType
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setTreeType($treeType)
     {
@@ -524,7 +524,7 @@ class WoodlandRights
      *
      * @param string $valid
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setValid($valid)
     {
@@ -548,7 +548,7 @@ class WoodlandRights
      *
      * @param string $authorizedDate
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setAuthorizedDate($authorizedDate)
     {
@@ -572,7 +572,7 @@ class WoodlandRights
      *
      * @param string $processor
      *
-     * @return WoollandRights
+     * @return WoodlandRights
      */
     public function setProcessor($processor)
     {
