@@ -215,9 +215,38 @@ class Zhimi
         $data= json_decode($result->response, true);
 
         if ($data["Error"] !== 0 || $data["Result"] == null) {
+
+            $url  = $this->container->getParameter('niwo')['chain']['status_api'];
+            $url  = "{$url}/{$id}";
+
+            $curl = new Curl();
+            $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
+
+            $result = $curl->get($url);
+
+            $data= json_decode($result->response, true);
+
+            if ($result->error || $data["Error"] !== 0 || $data["Result"] == null) {
+
+                $response->setContent(json_encode([
+                    "ret_code" => 4,
+                    "value" => null,
+                    "reason_string" => "证件号已注册"
+                ]));
+
+                return $response;
+            }
+
+            $bc_id = $data["Result"]["did"];
+            $state = $data["Result"]["state"];
+
+
             $response->setContent(json_encode([
                 "ret_code" => 4,
-                "value" => null,
+                "value" => [
+                    "bc_id" => $bc_id,
+                    "state" => $state
+                ],
                 "reason_string" => "证件号已注册"
             ]));
 

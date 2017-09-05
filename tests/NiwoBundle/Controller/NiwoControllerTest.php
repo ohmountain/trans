@@ -4,7 +4,7 @@ namespace NiwoBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class NiwoControllerTest extends WebTestCase
 {
     /**
      * 测试 unix时间戳作为证件号注册
@@ -68,6 +68,9 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($ret_code === 4);
     }
 
+    /**
+     * 测试诚信API
+     */
     public function testChengxin()
     {
         $client = static::createClient();
@@ -97,6 +100,9 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue(array_key_exists("history", $ret_value));
     }
 
+    /**
+     * 土地权益的测试
+     */
     public function testLandRights()
     {
         $client = static::createClient();
@@ -127,6 +133,9 @@ class DefaultControllerTest extends WebTestCase
     }
 
 
+    /**
+     * 房屋产权的测试
+     */
     public function testhousingRights()
     {
         $client = static::createClient();
