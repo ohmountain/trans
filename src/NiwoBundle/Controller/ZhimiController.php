@@ -36,7 +36,7 @@ class ZhimiController extends Controller
          *  参数不是JSON格式
          *  ret_code 40200
          */
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (json_last_error() != JSON_ERROR_NONE || !is_array($json_data)) {
             $response = new Response(json_encode(array(
                 "ret_code" => 40200,
                 "reason_string" => "参数格式错误"

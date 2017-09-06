@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class HousingPropertyRightsControllerTest extends WebTestCase
 {
     /*
+     * 测试
+     */
     public function testCompleteScenario()
     {
         // Create a new client to browse the application
