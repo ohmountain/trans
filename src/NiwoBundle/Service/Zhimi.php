@@ -257,7 +257,7 @@ class Zhimi
             return $response;
         }
 
-        /**
+        /*
          * 假设注册成功
          * ret_code 0
          */
@@ -273,6 +273,9 @@ class Zhimi
         return $response;
     }
 
+    /**
+     * 状态查询
+     */
     private function registerStatus(string $id): JsonResponse
     {
         $response = new JsonResponse();
