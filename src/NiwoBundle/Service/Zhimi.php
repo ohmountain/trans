@@ -166,6 +166,10 @@ class Zhimi
             return $this->housingPropertyRights($parameter);
         }
 
+        if ($op_type == 6) {
+            return $this->eligibility($parameter);
+        }
+
     }
 
     /**
@@ -752,6 +756,24 @@ class Zhimi
                     "authorized_date" => "发证日期",
                     "authorized_dept" => "发证机关"
                 ]]
+            ]
+        ]));
+
+        return $response;
+    }
+
+    /**
+     * 社会救助
+     */
+    public function eligibility(array $parameter): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "hash" => hash("sha256", hash("sha256", 1)),
+                "eligibility" => true
             ]
         ]));
 

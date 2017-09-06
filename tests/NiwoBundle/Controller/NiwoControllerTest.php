@@ -65,7 +65,7 @@ class NiwoControllerTest extends WebTestCase
 
         $ret_code = $result["ret_code"];
 
-        $this->assertTrue($ret_code === 4);
+        $this->assertEquals($ret_code, 4);
     }
 
     /**
@@ -163,5 +163,23 @@ class NiwoControllerTest extends WebTestCase
         $this->assertTrue(is_array($ret_value));
         $this->assertTrue(array_key_exists("hash", $ret_value));
         $this->assertTrue(array_key_exists("ownership", $ret_value));
+    }
+
+    /**
+     * 测试没有参数
+     */
+    public function testRequestWithoutParameters()
+    {
+        $client  = static::createClient();
+        $crawler = $client->request('GET', "/zhimi");
+
+        $content = $client->getResponse()->getContent();
+        $result  = json_decode($content, true);
+
+        $ret_code = $result["ret_code"];
+        $reason_string = $result["reason_string"];
+
+        $this->assertEquals($ret_code, 40100);
+        $this->assertEquals($reason_string, "需要请求参数");
     }
 }
