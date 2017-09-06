@@ -1,6 +1,7 @@
 zhimi_api:
     path:     /zhimi
     defaults: { _controller: NiwoBundle:Zhimi:index }
+    methods: [GET, POST]
 
 
 zhimi_g_api:
