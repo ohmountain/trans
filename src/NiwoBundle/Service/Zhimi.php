@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Curl\Curl;
+use NiwoBundle\Entity\Person;
 
 class Zhimi
 {
@@ -244,7 +245,6 @@ class Zhimi
             $bc_id = $data["Result"]["did"];
             $state = $data["Result"]["state"];
 
-
             $response->setContent(json_encode([
                 "ret_code" => 4,
                 "value" => [
@@ -256,6 +256,17 @@ class Zhimi
 
             return $response;
         }
+
+        $person = new Person();
+        $person->setBcId($bc_id);
+        $person->setHash($id);
+
+        /**
+         * 保存进数据库
+         */
+        $em = $this->container->get('doctrine')->getManager();
+        $em->persist($person);
+        $em->flush();
 
         /*
          * 假设注册成功
@@ -367,19 +378,22 @@ class Zhimi
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ]
                         ]
                     ],
@@ -390,19 +404,22 @@ class Zhimi
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ]
                         ]
                     ],
@@ -413,19 +430,22 @@ class Zhimi
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ]
                         ]
                     ],
@@ -436,19 +456,22 @@ class Zhimi
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ]
                         ]
                     ],
@@ -459,19 +482,22 @@ class Zhimi
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ],
                             [
                                 "timestamp" => "20170101101326",
                                 "name" => "张三",
                                 "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx"
+                                "content" => "xxxxxxxxxxxxx",
+                                "cert" => hash("sha256", uniqid())
                             ]
                         ]
                     ],

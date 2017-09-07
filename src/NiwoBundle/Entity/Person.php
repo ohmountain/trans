@@ -36,11 +36,6 @@ class Person
     private $hash;
 
     /**
-     * @ORM\OneToMany(targetEntity="Portrait", mappedBy="person")
-     */
-    private $portraits;
-
-    /**
      * Get id
      *
      * @return int
@@ -97,45 +92,5 @@ class Person
     {
         return $this->hash;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->portraits = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
-    /**
-     * Add portrait
-     *
-     * @param \NiwoBundle\Entity\Portrait $portrait
-     *
-     * @return Person
-     */
-    public function addPortrait(\NiwoBundle\Entity\Portrait $portrait)
-    {
-        $this->portraits[] = $portrait;
-
-        return $this;
-    }
-
-    /**
-     * Remove portrait
-     *
-     * @param \NiwoBundle\Entity\Portrait $portrait
-     */
-    public function removePortrait(\NiwoBundle\Entity\Portrait $portrait)
-    {
-        $this->portraits->removeElement($portrait);
-    }
-
-    /**
-     * Get portraits
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPortraits()
-    {
-        return $this->portraits;
-    }
 }
