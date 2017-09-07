@@ -357,7 +357,7 @@ class Zhimi
         $response = new JsonResponse();
 
         /**
-         * TODO
+         * DONE
          * 1. 执行正常的获取逻辑
          * 2. 可能获取失败
          */
@@ -802,6 +802,7 @@ class Zhimi
             "ret_code" => 0,
             "value" => [
                 "hash" => hash("sha256", hash("sha256", 1)),
+                "cert" => hash("sha256", uniqid()),
                 "eligibility" => true
             ]
         ]));
