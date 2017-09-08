@@ -257,6 +257,9 @@ class Zhimi
             return $response;
         }
 
+        $bc_id = $data["Result"]["did"];
+        $state = $data["Result"]["state"];
+
         $person = new Person();
         $person->setBcId($bc_id);
         $person->setHash($id);
