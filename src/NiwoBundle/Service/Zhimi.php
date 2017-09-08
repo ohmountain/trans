@@ -91,7 +91,7 @@ class Zhimi
             return $response;
         }
 
-        if (!array_key_exists("id_type", $parameter)) {
+        if (!array_key_exists("id_type", $parameter) || !$this->checkIdType($parameter["id_type"])) {
             $response->setContent(json_encode([
                 "ret_code" => 2,
                 "reason_string" => "id_type 异常",
@@ -171,6 +171,41 @@ class Zhimi
             return $this->eligibility($parameter);
         }
 
+    }
+
+    private function checkIdType($id_type): bool
+    {
+        $allowed = [
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "1a",
+            "1b",
+            "1c",
+            "1d",
+            "1e",
+            "1f",
+            "1g",
+            "1X",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29"
+        ];
+
+        return in_array($id_type, $allowed);
     }
 
     /**
