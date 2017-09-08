@@ -108,9 +108,7 @@ class Zhimi
             !array_key_exists("id", $parameter)
         ) {
             $response->setContent(json_encode([
-                "ret_code" => 40700,
-                "reason_string" => "参数不全,需要id_type、id、sig(可选)",
-            ]));
+                "ret_code" => 40700,                "reason_string" => "参数不全,需要id_type、id、sig(可选)",            ]));
 
             return $response;
         }
@@ -125,9 +123,7 @@ class Zhimi
          */
         if (empty($id) || empty($id_type)) {
             $response->setContent(json_encode([
-                "ret_code" => 40800,
-                "reason_string" => "参数不能为空",
-            ]));
+                "ret_code" => 40800,                "reason_string" => "参数不能为空",            ]));
 
             return $response;
         }
@@ -175,35 +171,7 @@ class Zhimi
 
     private function checkIdType($id_type): bool
     {
-        $allowed = [
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "1a",
-            "1b",
-            "1c",
-            "1d",
-            "1e",
-            "1f",
-            "1g",
-            "1X",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29"
-        ];
+        $allowed = ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "1a", "1b", "1c", "1d", "1e", "1f", "1g", "1X", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "a2", "2b", "2c", "2d", "2e", "2X"];
 
         return in_array($id_type, $allowed);
     }
