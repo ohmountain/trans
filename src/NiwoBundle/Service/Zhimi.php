@@ -41,7 +41,7 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 10])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 10])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
                 "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 10]"
@@ -167,9 +167,17 @@ class Zhimi
             return $this->eligibility($parameter);
         }
 
+        if ($op_type == 7) {
+            return $this->rentalInfomation($parameter);
+        }
     }
 
-    private function checkIdType($id_type): bool
+    /**
+     * 检测证件类型是否符合规定
+     *
+     * 证件类型的含义具体可看API文档
+     */
+    private function checkIdType(string $id_type): bool
     {
         $allowed = ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "1a", "1b", "1c", "1d", "1e", "1f", "1g", "1X", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "a2", "2b", "2c", "2d", "2e", "2X"];
 
@@ -559,7 +567,8 @@ class Zhimi
                             "block_type" => "田",
                             "block_no" => "1234343555",
                             "block_coordinate" => "x24534342.120,Y34343434.309",
-                            "block_shape" => "方形"
+                            "block_shape" => "方形",
+                            "useage_status" => 1
                         ],
                         [
                             "block_name" => "地块2",
@@ -567,7 +576,8 @@ class Zhimi
                             "block_type" => "地",
                             "block_no" => "1984343555",
                             "block_coordinate" => "x24534345.120,Y34343454.309",
-                            "block_shape" => "正圆形"
+                            "block_shape" => "正圆形",
+                            "useage_status" => 2
                         ]
                     ]
                 ],
@@ -810,6 +820,45 @@ class Zhimi
                 "hash" => hash("sha256", hash("sha256", 1)),
                 "cert" => hash("sha256", uniqid()),
                 "eligibility" => true
+            ]
+        ]));
+
+        return $response;
+    }
+
+    /**
+     * 获取租赁信息
+     */
+    private function rentalInfomation(array $parameter): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "hash" => "身证链ID hash (string)",
+                "contract" => [
+                    "party_a" => "王诚信，李模范，赵先进",
+                    "party_a_id" => "38203822",
+                    "party_a_contact" => "085188823333",
+                    "party_b" => "某某公司",
+                    "party_b_id" => "38203822",
+                    "party_b_contact" => "085188823333",
+                    "block" => [
+                        [
+                            "owner_name" => "王诚信",
+                            "block_name" => "地块1",
+                            "block_area" => "123.23",
+                            "block_type" => "田",
+                            "block_no" => "1234343555",
+                            "block_coordinate" => "x24534342.120,Y34343434.309",
+                            "block_shape" => "方形",
+                            "usage_status" => 1,
+                            "liability" => "责任与义务说明"
+                        ]
+                    ]
+                ],
+                "reason_string" => ""
             ]
         ]));
 

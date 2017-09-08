@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('chain')->children()
                 ->scalarNode("register_api")->isRequired()->end()
                 ->scalarNode("status_api")->isRequired()->end()
+                ->scalarNode("send_record_api")->isRequired()->end()
                 ->integerNode("timeout")->min(1)->max(20)->end()
             ->end();
 
