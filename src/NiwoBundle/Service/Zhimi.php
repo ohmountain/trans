@@ -204,7 +204,7 @@ class Zhimi
          */
 
         $id = $parameter['id'];
-        $id = hash("sha256", hash("sha256", $id));
+        $id = hash("sha256", hash("sha256", "1".$id));
 
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
@@ -367,6 +367,11 @@ class Zhimi
      */
     private function chengxin(array $parameter)
     {
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? null;
+
+        $hash = hash("sha256", hash("sha256", "1{$id}"));
 
         $response = new JsonResponse();
 
@@ -519,6 +524,7 @@ class Zhimi
             ]
         ]));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["金融信用","公共服务","公共信用", "司法信用", "其他"], "获取信用信息", $sig);
         return $response;
     }
 
@@ -544,10 +550,12 @@ class Zhimi
         $id      = $parameter["id"];
         $sig     = $parameter["sig"] ?? null;
 
+        $hash = hash("sha256", hash("sha256", "1{$id}"));
+
         $data = [
             'ret_code' => 0,
             'value' => [
-                "hash" => hash("sha256", hash("sha256", "1")),
+                "hash" => $hash,
                 "ownership" => [
 
                     "comm_name" => "xxx村民委员会",
@@ -587,11 +595,13 @@ class Zhimi
 
         $response->setContent(json_encode($data));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["landrights"], "获取土地确权信息", $sig);
+
         return $response;
     }
 
     /**
-     * 三变土地确权
+     * 三变林权信息
      *
      * @param array $parameter
      *
@@ -610,7 +620,7 @@ class Zhimi
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
         $sig     = $parameter["sig"] ?? null;
-
+        $hash    = hash("sha256", hash("sha256", "1".$id));
 
         $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
 
@@ -656,6 +666,7 @@ class Zhimi
             ]
         ]));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取林权信息", $sig);
         return $response;
     }
 
@@ -680,6 +691,7 @@ class Zhimi
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
         $sig     = $parameter["sig"] ?? null;
+        $hash    = hash("sha256", hash("sha256", "1".$id));
 
         // 虚假数据，用于开发
         $data = [[
@@ -758,6 +770,8 @@ class Zhimi
             "ret_string" => "获取成功"
         ]));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取房屋产权信息", $sig);
+
         return $response;
     }
 
@@ -812,6 +826,11 @@ class Zhimi
      */
     public function eligibility(array $parameter): JsonResponse
     {
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? null;
+        $hash    = hash("sha256", hash("sha256", "1".$id));
+
         $response = new JsonResponse();
 
         $response->setContent(json_encode([
@@ -823,6 +842,8 @@ class Zhimi
             ]
         ]));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取社会救助信息", $sig);
+
         return $response;
     }
 
@@ -831,6 +852,10 @@ class Zhimi
      */
     private function rentalInfomation(array $parameter): JsonResponse
     {
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? null;
+        $hash    = hash("sha256", hash("sha256", "1".$id));
         $response = new JsonResponse();
 
         $response->setContent(json_encode([
@@ -862,6 +887,69 @@ class Zhimi
             ]
         ]));
 
+        $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取租赁信息", $sig);
         return $response;
+    }
+
+    /**
+     * 发送存证
+     *
+     * @param string $ckey        ;;发起者身份标志(客户端无需填写，由服务器填写)
+     * @param string $did         ;;必填，用户DID
+     * @param string $hash        ;;必填，存证HASH
+     * @param string $tags        ;;必填，存证维度
+     * @param string $content     ;;存证内容
+     * @param string $sig         ;;对存证hash进行签名
+     * @param string $seq_no      ;;交易流水号，发起方系统生成，每笔交易需要保证唯一
+     */
+    public function sendCert(string $ckey = "",
+                             string $did,
+                             string $hash,
+                             array $tags,
+                             string $content = "",
+                             string $sig = "",
+                             string $seq_no = "")
+    {
+        $send_cert_api = $this->container->getParameter("niwo")["chain"]["send_cert_api"];
+
+        $curl = new Curl();
+
+        $curl->setHeader("content-type", "application/json");
+
+        $text = [
+            "Template" => "1",
+            "Did" => $did,
+            "CertHash" => "",
+            "Tag" => $tags,
+            "Content" => $content];
+
+        $data =  [
+            "Action" => "sendrecordtransaction",
+            "Version" => "1.0.0",
+            "RecordData" =>  [
+                "CAkey" => "",
+                "Data" => [
+                    "Algrithem" => "",
+                    "Hash" => $hash,
+                    "Text" => json_encode($text),
+                    "Signature" => $sig
+                ],
+                "SeqNo" => $seq_no,
+                "Timestamp" => time()
+            ]
+        ];
+
+        $res = $curl->post($send_cert_api, json_encode($data));
+    }
+
+    private function getDid(string $hash): string
+    {
+        $result = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Person")->findBy(["hash" => $hash]);
+
+        if (count($result) == 0) {
+            return "";
+        }
+
+        return $result[0]->getBcId();
     }
 }

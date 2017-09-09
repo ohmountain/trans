@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use ApiBundle\Service\Response;
+use Curl\Curl;
 
 class DefaultController extends Controller
 {
