@@ -915,6 +915,7 @@ class Zhimi
         $send_cert_api = $this->container->getParameter("niwo")["chain"]["send_cert_api"];
 
         $curl = new Curl();
+        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter('niwo')['chain']['timeout']);
 
         $curl->setHeader("content-type", "application/json");
 
@@ -941,7 +942,11 @@ class Zhimi
             ]
         ];
 
-        $res = $curl->post($send_cert_api, json_encode($data));
+        try {
+            $res = $curl->post($send_cert_api, json_encode($data));
+        } catch(\Exception $e) {
+
+        }
     }
 
     private function getDid(string $hash): string
