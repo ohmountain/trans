@@ -945,7 +945,9 @@ class Zhimi
         try {
             $res = $curl->post($send_cert_api, json_encode($data));
         } catch(\Exception $e) {
-
+            $this->container->get("logger")->critica("存证请求失败", [
+                "message" => $e->getMessage()
+            ]);
         }
     }
 

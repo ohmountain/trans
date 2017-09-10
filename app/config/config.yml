@@ -82,6 +82,20 @@ niwo:
         status_api:   http://54.222.240.78:9080/api/v1/identityupdate/query/certhash/gyi
         # 发送存证API
         # send_cert_api: http://54.222.240.78:9080/api/v1/record
-        send_cert_api: http://172.20.10.5:7070/api/v1/record
         # 请求超时时间(秒)
         timeout: 10
+
+monolog:
+    handlers:
+        # this "file_log" key could be anything
+        file_log:
+            type: stream
+            # log to var/logs/(environment).log
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            # log *all* messages (debug is lowest level)
+            level: debug
+
+        syslog_handler:
+            type: syslog
+            # log error-level messages and higher
+            level: error
