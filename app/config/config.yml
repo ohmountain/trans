@@ -81,7 +81,7 @@ niwo:
         # 查询注册状态API
         status_api:   http://54.222.240.78:9080/api/v1/identityupdate/query/certhash/gyi
         # 发送存证API
-        # send_cert_api: http://54.222.240.78:9080/api/v1/record
+        send_cert_api: http://54.222.240.78:9080/api/v1/record
         # 请求超时时间(秒)
         timeout: 10
 
