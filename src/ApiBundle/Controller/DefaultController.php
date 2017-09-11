@@ -16,6 +16,14 @@ class DefaultController extends Controller
 
         $this->get("logger")->info("Oh", ["a" => "c"]);
 
-        return Response::Json(Response::SUCCESS, "请求成功", true, ["name" => "renshan", "data" => $data]);
+        return Response::Json(Response::SUCCESS,
+                              "请求成功",
+                              true,
+                              [
+                                  "name" => "renshan",
+                                  "data" => $data,
+                                  "webpath" => realpath($this->get("kernel")->getRootDir() . "/../web")
+                              ]
+        );
     }
 }

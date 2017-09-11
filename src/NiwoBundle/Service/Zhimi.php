@@ -41,7 +41,7 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 10])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
                 "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 10]"
@@ -169,6 +169,14 @@ class Zhimi
 
         if ($op_type == 7) {
             return $this->rentalInfomation($parameter);
+        }
+
+        if ($op_type == 8) {
+            return $this->changeRentalInfomation($parameter);
+        }
+
+        if ($op_type == 9) {
+            return $this->rentalBlocksInfomation($parameter);
         }
     }
 
@@ -891,6 +899,98 @@ class Zhimi
 
         $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取租赁信息", $sig);
         return $response;
+    }
+
+    private function changeRentalInfomation(array $parameter): JsonResponse
+    {
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? "";
+        $hash    = hash("sha256", hash("sha256", "1".$id));
+        $contract = $parameter["value"]["contract"];
+
+
+        // TODO 变更动作
+
+        // 假设变更完成
+        $response = new JsonResponse();
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "image" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"
+            ],
+            "reason_string" => "合同更改成功"
+        ]));
+
+        $this->sendCert("", $this->getDid($hash), $hash, ["changerentalinfomation"], "变更租赁信息", $sig);
+
+        return $response;
+    }
+
+    /**
+     * 获取三变租赁区块信息
+     */
+    private function rentalBlocksInfomation(array $parameter): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $id_type = $parameter["id_type"];
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? "";
+        $hash    = hash("sha256", hash("sha256", "1".$id));
+
+        $data = [
+
+            "ret_code" => 0,
+
+            "value" => [
+
+                "hash" => "身证链ID hash (string)",
+                "merkle_root" => "hash id",
+                "block_height" => "hash id",
+                "content_hash" => "hash id",
+                "contract_url" => "url string"
+
+            ],
+            "reason_string" => ""
+
+        ];
+
+        $this->sendCert("", $this->getDid($hash), $hash, ["getrentalinblocksfomation"], "变更租赁信息", $sig);
+
+        return $response->setContent(json_encode($data));
+    }
+
+    /**
+     * 把base64的编码的图片转换并保存为本地图片, 每天变更多次则只保存最后一次的图片
+     *
+     * @param string $base64
+     *
+     * @return string      返回图片地址
+     */
+    private function saveBase46ToImage(string $base64m, string $id): string
+    {
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64, $result)) {
+
+            $type = $result[2];
+
+            $path = realpath($this->container->get("kernel")->getRootDir()."/../web/")."upload/image/".date('Ymd',time())."/";
+
+            if(!file_exists($path)) {
+                try {
+                    mkdir($new_file, 0700);
+                } catch(\Exception $e) {
+                    return "";
+                }
+            }
+
+            $file = $path.$id.".{$type}";
+            if (file_put_contents($file, base64_decode(str_replace($result[1], '', $base64)))){
+                return $file;
+            }
+
+            return "";
+        }
     }
 
     /**
