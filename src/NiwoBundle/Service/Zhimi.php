@@ -42,10 +42,10 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
-                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
             ]));
 
             return $response;
@@ -182,6 +182,10 @@ class Zhimi
 
         if ($op_type == 11) {
             return $this->createRental($parameter);
+        }
+
+        if ($op_type == 12) {
+            return $this->equityProportion($parameter);
         }
     }
 
@@ -576,6 +580,7 @@ class Zhimi
                     "owner_id" => "245358464696969",
                     "owner_name" => "张三",
                     "owner_gender" => "男",
+                    "owner_contact" => "15985110000",
                     "owner_sid" => "309210920102301230",
                     "family_name" => "李四",
                     "family_gender" => "女",
@@ -1029,6 +1034,34 @@ class Zhimi
     }
 
     /**
+     * 查询股权占比
+     */
+    private function equityProportion(array $parameter): JsonResponse
+    {
+        // TODO
+        // 1. 查出所有合同的面积
+        // 2. 加上新合同的面积后计算新合同的股权占比
+
+        // 虚假面积变量
+        $static = 8;
+
+        $area = $parameter["area"];
+
+        $response = new JsonResponse();
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "current" => $static,
+                "after" => $static + $area,
+                "percent" => $area / ($static + $area)
+            ],
+            "reason_string" => "获取成功"
+        ]));
+
+        return $response;
+    }
+
+    /**
      * 把base64的编码的图片转换并保存为本地图片, 每天变更多次则只保存最后一次的图片
      *
      * @param string $base64
@@ -1063,7 +1096,6 @@ class Zhimi
 
             return "";
         }
-
 
         return "";
     }
