@@ -1120,7 +1120,13 @@ class Zhimi
 
         try {
             $res = $curl->post($send_cert_api, json_encode($data));
-            return json_decode($res->response, true)["Result"];
+            $hash = json_decode($res->response, true)["Result"];
+
+            if ($hash == null) {
+                $this->container->get("logger")->error("发送存证失败");
+            }
+
+            return $hash ?? "";
         } catch(\Exception $e) {
             $this->container->get("logger")->critica("存证请求失败", [
                 "message" => $e->getMessage()
