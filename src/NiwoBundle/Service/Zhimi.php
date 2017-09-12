@@ -994,10 +994,10 @@ class Zhimi
 
         $rental = new Rental();
 
-        $rental->setPartyaName($contract["party_a_name"] ?? "");
+        $rental->setPartyaName($contract["party_a"] ?? "");
         $rental->setPartyaId($contract["party_a_id"] ?? "");
         $rental->setPartyaContact($contract["party_a_contact"] ?? "");
-        $rental->setPartybName($contract["party_b_name"] ?? "");
+        $rental->setPartybName($contract["party_b"] ?? "");
         $rental->setPartybId($contract["party_b_id"] ?? "");
         $rental->setPartybContact($contract["party_b_contact"] ?? "");
         $rental->setHash($hash);
