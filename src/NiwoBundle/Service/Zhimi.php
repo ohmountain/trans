@@ -1049,6 +1049,9 @@ class Zhimi
                 try {
                     mkdir($path, 0700, true);
                 } catch(\Exception $e) {
+                    $this->container->get("logger")->critica("创建目录失败", [
+                        "message" => $e->getMessage()
+                    ]);
                     return "";
                 }
             }
