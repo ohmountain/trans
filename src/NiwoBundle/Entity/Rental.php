@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Rental
  *
  * @ORM\Table(name="rental",indexes={
- *     @ORM\Index(name="rental_parta_id", columns={"parta_id"}),
- *     @ORM\Index(name="rental_partb_id", columns={"partb_id"}),
- *     @ORM\Index(name="rental_parta_name", columns={"parta_name"}),
- *     @ORM\Index(name="rental_partb_name", columns={"partb_name"})
+ *     @ORM\Index(name="rental_partya_id", columns={"partya_id"}),
+ *     @ORM\Index(name="rental_partyb_id", columns={"partyb_id"}),
+ *     @ORM\Index(name="rental_partya_name", columns={"partya_name"}),
+ *     @ORM\Index(name="rental_partyb_name", columns={"partyb_name"})
  * })
  * @ORM\Entity(repositoryClass="NiwoBundle\Repository\RentalRepository")
  */
@@ -29,44 +29,44 @@ class Rental
     /**
      * @var string
      *
-     * @ORM\Column(name="parta_name", type="string", length=255)
+     * @ORM\Column(name="partya_name", type="string", length=255)
      */
-    private $partaName;
+    private $partyaName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="parta_id", type="string", length=255)
+     * @ORM\Column(name="partya_id", type="string", length=255)
      */
-    private $partaId;
+    private $partyaId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="parta_contact", type="string", length=255)
+     * @ORM\Column(name="partya_contact", type="string", length=255)
      */
-    private $partaContact;
+    private $partyaContact;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="partb_name", type="string", length=255)
+     * @ORM\Column(name="partyb_name", type="string", length=255)
      */
-    private $partbName;
+    private $partybName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="partb_id", type="string", length=255)
+     * @ORM\Column(name="partyb_id", type="string", length=255)
      */
-    private $partbId;
+    private $partybId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="partb_contact", type="string", length=255)
+     * @ORM\Column(name="partyb_contact", type="string", length=255)
      */
-    private $partbContact;
+    private $partybContact;
 
     /**
      * @var string
@@ -122,147 +122,147 @@ class Rental
     }
 
     /**
-     * Set partaName
+     * Set partyaName
      *
-     * @param string $partaName
+     * @param string $partyaName
      *
      * @return Rental
      */
-    public function setPartaName($partaName)
+    public function setPartyaName($partyaName)
     {
-        $this->partaName = $partaName;
+        $this->partyaName = $partyaName;
 
         return $this;
     }
 
     /**
-     * Get partaName
+     * Get partyaName
      *
      * @return string
      */
-    public function getPartaName()
+    public function getPartyaName()
     {
-        return $this->partaName;
+        return $this->partyaName;
     }
 
     /**
-     * Set partaId
+     * Set partyaId
      *
-     * @param string $partaId
+     * @param string $partyaId
      *
      * @return Rental
      */
-    public function setPartaId($partaId)
+    public function setPartyaId($partyaId)
     {
-        $this->partaId = $partaId;
+        $this->partyaId = $partyaId;
 
         return $this;
     }
 
     /**
-     * Get partaId
+     * Get partyaId
      *
      * @return string
      */
-    public function getPartaId()
+    public function getPartyaId()
     {
-        return $this->partaId;
+        return $this->partyaId;
     }
 
     /**
-     * Set partaContact
+     * Set partyaContact
      *
-     * @param string $partaContact
+     * @param string $partyaContact
      *
      * @return Rental
      */
-    public function setPartaContact($partaContact)
+    public function setPartyaContact($partyaContact)
     {
-        $this->partaContact = $partaContact;
+        $this->partyaContact = $partyaContact;
 
         return $this;
     }
 
     /**
-     * Get partaContact
+     * Get partyaContact
      *
      * @return string
      */
-    public function getPartaContact()
+    public function getPartyaContact()
     {
-        return $this->partaContact;
+        return $this->partyaContact;
     }
 
     /**
-     * Set partbName
+     * Set partybName
      *
-     * @param string $partbName
+     * @param string $partybName
      *
      * @return Rental
      */
-    public function setPartbName($partbName)
+    public function setPartybName($partybName)
     {
-        $this->partbName = $partbName;
+        $this->partybName = $partybName;
 
         return $this;
     }
 
     /**
-     * Get partbName
+     * Get partybName
      *
      * @return string
      */
-    public function getPartbName()
+    public function getPartybName()
     {
-        return $this->partbName;
+        return $this->partybName;
     }
 
     /**
-     * Set partbId
+     * Set partybId
      *
-     * @param string $partbId
+     * @param string $partybId
      *
      * @return Rental
      */
-    public function setPartbId($partbId)
+    public function setPartybId($partybId)
     {
-        $this->partbId = $partbId;
+        $this->partybId = $partybId;
 
         return $this;
     }
 
     /**
-     * Get partbId
+     * Get partybId
      *
      * @return string
      */
-    public function getPartbId()
+    public function getPartybId()
     {
-        return $this->partbId;
+        return $this->partybId;
     }
 
     /**
-     * Set partbContact
+     * Set partybContact
      *
-     * @param string $partbContact
+     * @param string $partybContact
      *
      * @return Rental
      */
-    public function setPartbContact($partbContact)
+    public function setPartybContact($partybContact)
     {
-        $this->partbContact = $partbContact;
+        $this->partybContact = $partybContact;
 
         return $this;
     }
 
     /**
-     * Get partbContact
+     * Get partybContact
      *
      * @return string
      */
-    public function getPartbContact()
+    public function getPartybContact()
     {
-        return $this->partbContact;
+        return $this->partybContact;
     }
 
     /**

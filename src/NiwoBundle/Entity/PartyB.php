@@ -5,12 +5,12 @@ namespace NiwoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PartB
+ * PartyB
  *
- * @ORM\Table(name="part_b")
- * @ORM\Entity(repositoryClass="NiwoBundle\Repository\PartBRepository")
+ * @ORM\Table(name="party_b")
+ * @ORM\Entity(repositoryClass="NiwoBundle\Repository\PartyBRepository")
  */
-class PartB
+class PartyB
 {
     /**
      * @var int

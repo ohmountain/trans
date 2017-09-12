@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Curl\Curl;
 use NiwoBundle\Entity\Person;
+use NiwoBundle\Entity\Rental;
 
 class Zhimi
 {
@@ -41,10 +42,10 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
-                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 10]"
+                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
             ]));
 
             return $response;
@@ -177,6 +178,10 @@ class Zhimi
 
         if ($op_type == 9) {
             return $this->rentalBlocksInfomation($parameter);
+        }
+
+        if ($op_type == 11) {
+            return $this->createRental($parameter);
         }
     }
 
@@ -948,26 +953,79 @@ class Zhimi
             "ret_code" => 0,
 
             "value" => [
-
-                "hash" => "身证链ID hash (string)",
-                "merkle_root" => "hash id",
-                "block_height" => "hash id",
-                "content_hash" => "hash id",
-                "contract_url" => "url string"
-
+                "hash" => hash("sha256", uniqid()),
+                "merkle_root" => hash("sha256", uniqid()),
+                "block_height" => hash("sha256", uniqid()),
+                "content_hash" => hash("sha256", uniqid()),
+                "contract_url" => "https://www.baidu.com/".hash("sha256", uniqid()),
+                "images" => [
+                    "p0" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw",
+                    "p1" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw",
+                ]
             ],
             "reason_string" => ""
 
         ];
 
-        $this->sendCert("", $this->getDid($hash), $hash, ["getrentalinblocksfomation"], "变更租赁信息", $sig);
+        $this->sendCert("", $this->getDid($hash), $hash, ["getrentalinblocksfomation"], "获取租赁块信息", $sig);
 
         return $response->setContent(json_encode($data));
     }
 
     private function createRental(array $parameter): JsonResponse
     {
+        /**
+         * DONE
+         *
+         * 1. 获取操作用户的DID
+         * 2. 存证，获得存证hash
+         * 3. 转换并保存图片
+         * 4. 保存到数据库
+         */
+
+        $did = $this->getDid(hash("sha256", hash("sha256", "1".$parameter["id"])));
+
+        /// 存证hash
+        $hash = $this->sendCert("", $did, hash("sha256", json_encode($parameter["contract"])), ["创建租赁"], "创建租赁信息");
+
         $response = new JsonResponse();
+
+        $contract = $parameter["contract"];
+
+        $rental = new Rental();
+
+        $rental->setPartyaName($contract["part_a_name"] ?? "");
+        $rental->setPartyaId($contract["part_a_id"] ?? "");
+        $rental->setPartyaContact($contract["part_a_contact"] ?? "");
+        $rental->setPartybName($contract["part_b_name"] ?? "");
+        $rental->setPartybId($contract["part_b_id"] ?? "");
+        $rental->setPartybContact($contract["part_b_contact"] ?? "");
+        $rental->setHash($hash);
+        $rental->setStartTime($contract["start_time"]);
+        $rental->setEndTime($contract["start_time"]);
+        $rental->setBlock($contract["block"]);
+        $rental->setExpense($contract["expense"]);
+
+        $images = [];
+
+        foreach ($contract["images"] as $k => $image) {
+            $name = $hash ."_". $k;
+            $images[$k] = $this->saveBase64ToImage($image, $name);
+        }
+
+        $rental->setImages($images);
+
+        $em = $this->container->get("doctrine")->getManager();
+        $em->persist($rental);
+        $em->flush();
+
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [ "hash" => $hash, "images" => $images ],
+            "reason_string" => ""
+        ]));
+
+        return $response;
     }
 
     /**
@@ -977,17 +1035,19 @@ class Zhimi
      *
      * @return string      返回图片地址
      */
-    private function saveBase46ToImage(string $base64m, string $name): string
+    private function saveBase64ToImage(string $base64, string $name): string
     {
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64, $result)) {
 
             $type = $result[2];
 
-            $path = realpath($this->container->get("kernel")->getRootDir()."/../web/")."upload/image/".date('Ymd',time())."/";
+            $web_path = "/upload/image/".date('Ymd',time())."/" . $name . ".{$type}";
+
+            $path = realpath($this->container->get("kernel")->getRootDir()."/../web/")."/upload/image/".date('Ymd',time())."/";
 
             if(!file_exists($path)) {
                 try {
-                    mkdir($path, 0700);
+                    mkdir($path, 0700, true);
                 } catch(\Exception $e) {
                     return "";
                 }
@@ -995,11 +1055,14 @@ class Zhimi
 
             $file = $path.$name.".{$type}";
             if (file_put_contents($file, base64_decode(str_replace($result[1], '', $base64)))){
-                return $file;
+                return $web_path;
             }
 
             return "";
         }
+
+
+        return "";
     }
 
     /**
@@ -1019,7 +1082,7 @@ class Zhimi
                              array $tags,
                              string $content = "",
                              string $sig = "",
-                             string $seq_no = "")
+                             string $seq_no = ""): string
     {
         $send_cert_api = $this->container->getParameter("niwo")["chain"]["send_cert_api"];
 
@@ -1033,7 +1096,8 @@ class Zhimi
             "Did" => $did,
             "CertHash" => "",
             "Tag" => $tags,
-            "Content" => $content];
+            "Content" => $content
+        ];
 
         $data =  [
             "Action" => "sendrecordtransaction",
@@ -1041,7 +1105,7 @@ class Zhimi
             "RecordData" =>  [
                 "CAkey" => "",
                 "Data" => [
-                    "Algrithem" => "",
+                    "Algrithem" => "sha256",
                     "Hash" => $hash,
                     "Text" => json_encode($text),
                     "Signature" => $sig
@@ -1053,10 +1117,12 @@ class Zhimi
 
         try {
             $res = $curl->post($send_cert_api, json_encode($data));
+            return json_decode($res->response, true)["Result"];
         } catch(\Exception $e) {
             $this->container->get("logger")->critica("存证请求失败", [
                 "message" => $e->getMessage()
             ]);
+            return "";
         }
     }
 
