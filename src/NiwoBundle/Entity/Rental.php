@@ -8,9 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Rental
  *
  * @ORM\Table(name="rental",indexes={
- *     @ORM\Index(name="rental_parta_id", columns={"parta_id"})
- *     @ORM\Index(name="rental_partb_id", columns={"partb_id"})
- *     @ORM\Index(name="rental_parta_name", columns={"parta_name"})
+ *     @ORM\Index(name="rental_parta_id", columns={"parta_id"}),
+ *     @ORM\Index(name="rental_partb_id", columns={"partb_id"}),
+ *     @ORM\Index(name="rental_parta_name", columns={"parta_name"}),
+ *     @ORM\Index(name="rental_partb_name", columns={"partb_name"})
  * })
  * @ORM\Entity(repositoryClass="NiwoBundle\Repository\RentalRepository")
  */
@@ -28,7 +29,7 @@ class Rental
     /**
      * @var string
      *
-     * @ORM\Column(name="parta__name", type="string", length=255)
+     * @ORM\Column(name="parta_name", type="string", length=255)
      */
     private $partaName;
 

@@ -594,7 +594,7 @@ class Zhimi
                             "block_no" => "1984343555",
                             "block_coordinate" => "x24534345.120,Y34343454.309",
                             "block_shape" => "正圆形",
-                            "useage_status" => 2,
+                            "usage_status" => 2,
                             "contract_id_hash" => "AHDES9542"
                         ]
                     ]
