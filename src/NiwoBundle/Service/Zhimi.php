@@ -1123,7 +1123,7 @@ class Zhimi
             $hash = json_decode($res->response, true)["Result"];
 
             if ($hash == null) {
-                $this->container->get("logger")->error("发送存证失败", ["api" => $send_cert_api, "http_code" => $res->http_status_code, "message" => $res->error_message, "code" => $res->error_code]);
+                $this->container->get("logger")->error("发送存证失败", ["api" => $send_cert_api, "http_code" => $res->http_status_code, "message" => $res->error_message, "code" => $res->error_code, "hash" => $hash, "response" => $res->response]);
             }
 
             return $hash ?? "";
