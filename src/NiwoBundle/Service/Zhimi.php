@@ -584,7 +584,7 @@ class Zhimi
                             "block_no" => "1234343555",
                             "block_coordinate" => "x24534342.120,Y34343434.309",
                             "block_shape" => "方形",
-                            "useage_status" => 1,
+                            "usage_status" => 1,
                             "contract_id_hash" => "AHDES9542"
                         ],
                         [
@@ -879,6 +879,9 @@ class Zhimi
                     "party_b" => "某某公司",
                     "party_b_id" => "38203822",
                     "party_b_contact" => "085188823333",
+                    "start_time" => "19000101",
+                    "end_time" => "20000101",
+                    "expense" => 90000,
                     "block" => [
                         [
                             "owner_name" => "王诚信",
@@ -916,6 +919,7 @@ class Zhimi
         $response = new JsonResponse();
         $response->setContent(json_encode([
             "ret_code" => 0,
+            "cert" => hash("sha256", uniqid()),
             "value" => [
                 "image" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"
             ],
@@ -961,6 +965,11 @@ class Zhimi
         return $response->setContent(json_encode($data));
     }
 
+    private function createRental(array $parameter): JsonResponse
+    {
+        $response = new JsonResponse();
+    }
+
     /**
      * 把base64的编码的图片转换并保存为本地图片, 每天变更多次则只保存最后一次的图片
      *
@@ -968,7 +977,7 @@ class Zhimi
      *
      * @return string      返回图片地址
      */
-    private function saveBase46ToImage(string $base64m, string $id): string
+    private function saveBase46ToImage(string $base64m, string $name): string
     {
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64, $result)) {
 
@@ -978,13 +987,13 @@ class Zhimi
 
             if(!file_exists($path)) {
                 try {
-                    mkdir($new_file, 0700);
+                    mkdir($path, 0700);
                 } catch(\Exception $e) {
                     return "";
                 }
             }
 
-            $file = $path.$id.".{$type}";
+            $file = $path.$name.".{$type}";
             if (file_put_contents($file, base64_decode(str_replace($result[1], '', $base64)))){
                 return $file;
             }
