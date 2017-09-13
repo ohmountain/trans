@@ -15,15 +15,23 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder    = new TreeBuilder;
-        $rootNode       = $treeBuilder->root('niwo');
+        $rootNode       = $treeBuilder->root("niwo");
 
         $rootNode->children()
-            ->arrayNode('chain')->children()
-                ->scalarNode("register_api")->isRequired()->end()
-                ->scalarNode("status_api")->isRequired()->end()
-                ->scalarNode("send_cert_api")->isRequired()->end()
+            ->arrayNode("chain")->children()
+                    ->scalarNode("register_api")->isRequired()->end()
+                    ->scalarNode("status_api")->isRequired()->end()
+                    ->scalarNode("send_cert_api")->isRequired()->end()
+                    ->integerNode("timeout")->min(1)->max(20)->end()
+                ->end()
+            ->end()
+            ->arrayNode("sanbian")->children()
+                ->scalarNode("land")->isRequired()->end()
+                ->scalarNode("woodland")->isRequired()->end()
+                ->scalarNode("housing")->isRequired()->end()
                 ->integerNode("timeout")->min(1)->max(20)->end()
-            ->end();
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }

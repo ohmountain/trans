@@ -2,3 +2,8 @@ services:
    niwo.zhimi:
        class: NiwoBundle\Service\Zhimi
        arguments: ['@doctrine.orm.default_entity_manager', '@service_container']
+
+   niwo.sanbian:
+       class: NiwoBundle\Service\Sanbian
+       arguments: ['@service_container']
+
