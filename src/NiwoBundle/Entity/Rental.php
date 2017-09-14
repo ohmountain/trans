@@ -423,7 +423,7 @@ class Rental
      *
      * @return Rental
      */
-    public function setContentHash($contenthash)
+    public function setContentHash($content_hash)
     {
         $this->content_hash = $content_hash;
 
