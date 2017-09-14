@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode("register_api")->isRequired()->end()
                     ->scalarNode("status_api")->isRequired()->end()
                     ->scalarNode("send_cert_api")->isRequired()->end()
+                    ->scalarNode("block_info_api")->isRequired()->end()
                     ->integerNode("timeout")->min(1)->max(20)->end()
                 ->end()
             ->end()

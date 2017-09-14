@@ -1046,21 +1046,51 @@ class Zhimi
         $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
+        $id_hash = $parameter["id_hash"];
+
+        $rental = $this->em->getRepository("NiwoBundle\Entity\Rental")->findByHash($id_hash);
+
+        $images = [];
+
+        $markle_root = "";
+        $block_height = 0;
+        $content_hash = "";
+        $contract_url = "";
+
+        if ($rental != null) {
+            foreach ($rental->getImages() as $image) {
+                array_push($images, [
+                    "url" => $image
+                ]);
+            }
+            $content_hash = $rental->getContentHash();
+            $rental_hash  = $rental->getHash();
+        }
+
+        $curl = new Curl();
+        $block_info_api = $this->container->getParameter("niwo")["chain"]["block_info_api"];
+        $res = $curl->get($block_info_api."/".$id_hash);
+
+
+        if (!$res->error) {
+            $result = json_decode($res->response, true);
+
+            $markle_root  = $result["Result"]["merkleroot"] ?? "";
+            $block_height = $result["Result"]["height"] ?? 0;
+        }
+
+
         $data = [
 
             "ret_code" => 0,
 
             "value" => [
-                "hash" => hash("sha256", uniqid()),
-                "merkle_root" => hash("sha256", uniqid()),
-                "block_height" => hash("sha256", uniqid()),
-                "content_hash" => hash("sha256", uniqid()),
-                "contract_url" => "https://www.baidu.com/".hash("sha256", uniqid()),
-                "images" => [
-                    ["url" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"],
-                    ["url" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"],
-                    ["url" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"]
-                ]
+                "hash" => $id_hash,
+                "merkle_root" => $markle_root,
+                "block_height" => $block_height,
+                "content_hash" => $content_hash,
+                "contract_url" => $contract_url,
+                "images" => $images
             ],
             "reason_string" => ""
         ];
@@ -1083,6 +1113,8 @@ class Zhimi
 
         $did = $this->getDid(hash("sha256", hash("sha256", "1".$parameter["id"])));
 
+        $content_hash = hash("sha256", json_encode($parameter["contract"]));
+
         /// 存证hash
         $hash = $this->sendCert("", $did, hash("sha256", json_encode($parameter["contract"])), ["创建租赁"], "创建租赁信息");
 
@@ -1099,6 +1131,7 @@ class Zhimi
         $rental->setPartybId($contract["party_b_id"] ?? "");
         $rental->setPartybContact($contract["party_b_contact"] ?? "");
         $rental->setHash($hash);
+        $rental->setContentHash($content_hash);
         $rental->setStartTime($contract["start_time"]);
         $rental->setEndTime($contract["start_time"]);
         $rental->setBlock($contract["block"]);

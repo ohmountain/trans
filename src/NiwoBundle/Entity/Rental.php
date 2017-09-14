@@ -106,6 +106,13 @@ class Rental
     /**
      * @var string
      *
+     * @ORM\Column(name="content_hash", type="string")
+     */
+    private $content_hash;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="hash", type="string", length=255)
      */
     private $hash;
@@ -407,6 +414,30 @@ class Rental
     public function getHash()
     {
         return $this->hash;
+    }
+
+    /**
+     * Set content_hash
+     *
+     * @param string $content_hash
+     *
+     * @return Rental
+     */
+    public function setContentHash($contenthash)
+    {
+        $this->content_hash = $content_hash;
+
+        return $this;
+    }
+
+    /**
+     * Get content_hash
+     *
+     * @return string
+     */
+    public function getContentHash()
+    {
+        return $this->content_hash;
     }
 }
 

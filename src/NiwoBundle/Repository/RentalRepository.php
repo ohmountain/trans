@@ -10,4 +10,10 @@ namespace NiwoBundle\Repository;
  */
 class RentalRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByHash(string $hash)
+    {
+        $res = $this->findBy(["hash" => $hash]);
+
+        return $res[0] ?? null;
+    }
 }
