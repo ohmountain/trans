@@ -600,7 +600,7 @@ class Zhimi
             "owner_contact" => "",  // 暂无
             "owner_sid" => $trans_data->id_care ?? "",
             "family_name" => $trans_data->family[0]->name ?? "",
-            "family_gener" => $trans_data->family[0]->sex ?? "",
+            "family_gender" => $trans_data->family[0]->sex ?? "",
             "family_sid" => $trans_data->family[0]->id_care ?? "",
             "relationship" => $trans_data->family[0]->relationship ?? "",
             "block" => []
