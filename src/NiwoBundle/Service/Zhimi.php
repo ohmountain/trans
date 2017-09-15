@@ -703,7 +703,7 @@ class Zhimi
                     "south"        => $res->south ?? "",
                     "west"         => $res->west ?? "",
                     "north"        => $res->north ?? "",
-                    "woodland_id"  => $res->id ?? "",
+                    "woodland_id"  => "{$res->id}" ?? "",
                     "map_author"   => $res->mapper ?? "",
                     "land_name"    => $res->toponymy ?? "",
                     // "tree_type"    => $res->tree_type,
