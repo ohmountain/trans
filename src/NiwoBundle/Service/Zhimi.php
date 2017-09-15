@@ -609,7 +609,7 @@ class Zhimi
         foreach ($trans_data->land as $block) {
             $tmp = [
                 "block_name" => $block->name ?? "",
-                "block_area" => $block->area ?? "",
+                "block_area" => "{$block->area}" ?? "",
                 "block_type" => $block->status,
                 "block_no"   => "{$block->id}" ?? "",
                 "block_coordinate" => $block->coordinate ?? "",
