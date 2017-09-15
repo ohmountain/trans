@@ -30,7 +30,7 @@ class Sanbian
 
         $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
         $url  = $this->container->getParameter("niwo")["sanbian"]["land"];
-        $url  = "{$url}?bc_id={$id}";
+        $url  = "{$url}?idCare={$id}";
 
         $result = $curl->get($url);
 
@@ -68,7 +68,7 @@ class Sanbian
 
         $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
         $url  = $this->container->getParameter("niwo")["sanbian"]["woodland"];
-        $url  = "{$url}?bc_id={$id}";
+        $url  = "{$url}?idCare={$id}";
 
         $result = $curl->get($url);
 
@@ -106,7 +106,7 @@ class Sanbian
 
         $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
         $url  = $this->container->getParameter("niwo")["sanbian"]["housing"];
-        $url  = "{$url}?bc_id={$id}";
+        $url  = "{$url}?idCare={$id}";
 
         $result = $curl->get($url);
 
