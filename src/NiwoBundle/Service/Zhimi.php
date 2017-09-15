@@ -591,11 +591,17 @@ class Zhimi
 
         $trans_data = $result->data[0];
 
+        $owner_id = "";
+
+        if (is_array($trans_data) && $trans_data->id) {
+            $owner_id = "{$trans_data->id}";
+        }
+
         $ownership = [
             "comm_name" => $trans_data->village_committee ?? "",
             "comm_pp_name" => $trans_data->village_group ?? "",
             "owner_name" => $trans_data->householder_name ?? "",
-            "owner_id" => "{$trans_data->id}" ?? "",
+            "owner_id" => $owner_id,
             "owner_gender" => $trans_data->householder_sex ?? "",
             "owner_contact" => "",  // 暂无
             "owner_sid" => $trans_data->id_care ?? "",
@@ -606,19 +612,21 @@ class Zhimi
             "block" => []
         ];
 
-        foreach ($trans_data->land as $block) {
-            $tmp = [
-                "block_name" => $block->name ?? "",
-                "block_area" => "{$block->area}" ?? "",
-                "block_type" => $block->status,
-                "block_no"   => "{$block->id}" ?? "",
-                "block_coordinate" => $block->coordinate ?? "",
-                "block_shape" => $block->shapes ?? "",
-                "usage_status" => 1,          // 暂无
-                "contract_id_hash" => ""      // 暂无
-            ];
+        if (is_array($trans_data)) {
+            foreach ($trans_data->land as $block) {
+                $tmp = [
+                    "block_name" => $block->name ?? "",
+                    "block_area" => "{$block->area}" ?? "",
+                    "block_type" => $block->status,
+                    "block_no"   => "{$block->id}" ?? "",
+                    "block_coordinate" => $block->coordinate ?? "",
+                    "block_shape" => $block->shapes ?? "",
+                    "usage_status" => 1,          // 暂无
+                    "contract_id_hash" => ""      // 暂无
+                ];
 
-            array_push($ownership["block"], $tmp);
+                array_push($ownership["block"], $tmp);
+            }
         }
 
         $data = [
@@ -786,25 +794,27 @@ class Zhimi
 
         $data = [];
 
-        foreach ($res->data as $house) {
-            try {
-                array_push($data, [
-                    "address" => $house->address,
-                    "comm_name" => $house->village_committee,
-                    "comm_pp_name" => $house->village_group,
-                    "east" => $house->east,
-                    "north" => $house->north,
-                    "west" => $house->west,
-                    "south" => $house->south,
-                    "construction_area" => $house->floor_area,
-                    "house_area" => $house->floor_space,
-                    "owner_name" => $house->householder_name,
-                    "house_style" => $house->structure,
-                    "authorized_date" => "",    // 暂无
-                    "authorized_dept" => "",    // 暂无
-                ]);
-            } catch(\Exception $e) {
-                $this->container->get("logger")->error("转换房屋产权信息出错", ["message" => $e->getMessage()]);
+        if (is_array($res->data)) {
+            foreach ($res->data as $house) {
+                try {
+                    array_push($data, [
+                        "address" => $house->address,
+                        "comm_name" => $house->village_committee,
+                        "comm_pp_name" => $house->village_group,
+                        "east" => $house->east,
+                        "north" => $house->north,
+                        "west" => $house->west,
+                        "south" => $house->south,
+                        "construction_area" => $house->floor_area,
+                        "house_area" => $house->floor_space,
+                        "owner_name" => $house->householder_name,
+                        "house_style" => $house->structure,
+                        "authorized_date" => "",    // 暂无
+                        "authorized_dept" => "",    // 暂无
+                    ]);
+                } catch(\Exception $e) {
+                    $this->container->get("logger")->error("转换房屋产权信息出错", ["message" => $e->getMessage()]);
+                }
             }
         }
 
