@@ -621,7 +621,7 @@ class Zhimi
                     "block_no"   => "{$block->id}" ?? "",
                     "block_coordinate" => $block->coordinate ?? "",
                     "block_shape" => $block->shapes ?? "",
-                    "usage_status" => 1,          // 暂无
+                    "usage_status" => 0,          // 暂无
                     "contract_id_hash" => ""      // 暂无
                 ];
 
