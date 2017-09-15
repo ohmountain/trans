@@ -612,7 +612,7 @@ class Zhimi
             "block" => []
         ];
 
-        if (is_array($trans_data)) {
+        if (is_object($trans_data)) {
             foreach ($trans_data->land as $block) {
                 $tmp = [
                     "block_name" => $block->name ?? "",
