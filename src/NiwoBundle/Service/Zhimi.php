@@ -592,28 +592,28 @@ class Zhimi
         $trans_data = $result->data[0];
 
         $ownership = [
-            "comm_name" => $trans_data->village_committee,
-            "comm_pp_name" => $trans_data->village_group,
-            "owner_name" => $trans_data->householder_name,
-            "owner_id" => $trans_data->id,
-            "owner_gender" => $trans_data->householder_sex,
+            "comm_name" => $trans_data->village_committee ?? "",
+            "comm_pp_name" => $trans_data->village_group ?? "",
+            "owner_name" => $trans_data->householder_name ?? "",
+            "owner_id" => $trans_data->id ?? "",
+            "owner_gender" => $trans_data->householder_sex ?? "",
             "owner_contact" => "",  // 暂无
-            "owner_sid" => $trans_data->id_care,
-            "family_name" => $trans_data->family[0]->name,
-            "family_gener" => $trans_data->family[0]->sex,
-            "family_sid" => $trans_data->family[0]->id_care,
-            "relationship" => $trans_data->family[0]->relationship,
+            "owner_sid" => $trans_data->id_care ?? "",
+            "family_name" => $trans_data->family[0]->name ?? "",
+            "family_gener" => $trans_data->family[0]->sex ?? "",
+            "family_sid" => $trans_data->family[0]->id_care ?? "",
+            "relationship" => $trans_data->family[0]->relationship ?? "",
             "block" => []
         ];
 
         foreach ($trans_data->land as $block) {
             $tmp = [
-                "block_name" => $block->name,
-                "block_area" => $block->area,
+                "block_name" => $block->name ?? "",
+                "block_area" => $block->area ?? "",
                 "block_type" => $block->status,
-                "block_no"   => $block->id,
-                "block_coordinate" => $block->coordinate,
-                "block_shape" => $block->shapes,
+                "block_no"   => $block->id ?? "",
+                "block_coordinate" => $block->coordinate ?? "",
+                "block_shape" => $block->shapes ?? "",
                 "usage_status" => 1,          // 暂无
                 "contract_id_hash" => ""      // 暂无
             ];
@@ -695,22 +695,22 @@ class Zhimi
         try {
             foreach ($result->data  as $res) {
                 array_push($data, [
-                    "country_name" => $res->address,
-                    "comm_name"    => $res->village_committee,
-                    "comm_pp_name" => $res->village_committee,
-                    "owner_name"   => $res->householder_name,
-                    "east"         => $res->east,
-                    "south"        => $res->south,
-                    "west"         => $res->west,
-                    "north"        => $res->north,
-                    "woodland_id"  => $res->id,
-                    "map_author"   => $res->mapper,
-                    "land_name"    => $res->toponymy,
+                    "country_name" => $res->address ?? "",
+                    "comm_name"    => $res->village_committee ?? "",
+                    "comm_pp_name" => $res->village_committee ?? "",
+                    "owner_name"   => $res->householder_name ?? "",
+                    "east"         => $res->east ?? "",
+                    "south"        => $res->south ?? "",
+                    "west"         => $res->west ?? "",
+                    "north"        => $res->north ?? "",
+                    "woodland_id"  => $res->id ?? "",
+                    "map_author"   => $res->mapper ?? "",
+                    "land_name"    => $res->toponymy ?? "",
                     // "tree_type"    => $res->tree_type,
                     "tree_type"    => "",
-                    "valid"        => $res->trees_varieties,
-                    "authorized_date" => $res->date_issue,
-                    "processor"    => $res->responsible_person
+                    "valid"        => $res->trees_varieties ?? "",
+                    "authorized_date" => $res->date_issue ?? "",
+                    "processor"    => $res->responsible_person ?? ""
                 ]);
             }
         } catch (\Exception $e) {
