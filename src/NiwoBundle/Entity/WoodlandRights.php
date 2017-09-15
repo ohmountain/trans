@@ -24,14 +24,14 @@ class WoodlandRights
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_id", type="string", length=255, options={"comments": "所有人ID"})
+     * @ORM\Column(name="owner_id", type="string", length=255, options={"comment": "所有人ID"})
      */
     private $ownerId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_id_hash", type="string", length=255, options={"comments": "所有人ID hash"})
+     * @ORM\Column(name="owner_id_hash", type="string", length=255, options={"comment": "所有人ID hash"})
      */
     private $ownerIdHash;
 
@@ -45,91 +45,91 @@ class WoodlandRights
     /**
      * @var string
      *
-     * @ORM\Column(name="country_name", type="string", length=255, options={"comments": "乡镇"})
+     * @ORM\Column(name="country_name", type="string", length=255, options={"comment": "乡镇"})
      */
     private $countryName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comm_name", type="string", length=255, options={"comments": "村委会名称"})
+     * @ORM\Column(name="comm_name", type="string", length=255, options={"comment": "村委会名称"})
      */
     private $commName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comm_pp_name", type="string", length=255, options={"comments":"村民组名称"})
+     * @ORM\Column(name="comm_pp_name", type="string", length=255, options={"comment":"村民组名称"})
      */
     private $commPpName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="east", type="string", length=255, nullable=true, options={"comments": "东至"})
+     * @ORM\Column(name="east", type="string", length=255, nullable=true, options={"comment": "东至"})
      */
     private $east;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="south", type="string", length=255, nullable=true, options={"comments": "南至"})
+     * @ORM\Column(name="south", type="string", length=255, nullable=true, options={"comment": "南至"})
      */
     private $south;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="west", type="string", length=255, nullable=true, options={"comments": "西至"})
+     * @ORM\Column(name="west", type="string", length=255, nullable=true, options={"comment": "西至"})
      */
     private $west;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="north", type="string", length=255, nullable=true, options={"comments": "北至"})
+     * @ORM\Column(name="north", type="string", length=255, nullable=true, options={"comment": "北至"})
      */
     private $north;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="woodland_id", type="string", options={"comments": "林地编号"})
+     * @ORM\Column(name="woodland_id", type="string", options={"comment": "林地编号"})
      */
 
     private $woodlandId;
     /**
      * @var float
      *
-     * @ORM\Column(name="area", type="float", options={"comments": "林地面积(亩)"})
+     * @ORM\Column(name="area", type="float", options={"comment": "林地面积(亩)"})
      */
     private $area;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="map_author", type="string", options={"comments": "制图人"})
+     * @ORM\Column(name="map_author", type="string", options={"comment": "制图人"})
      */
     private $mapAuthor;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="land_name", type="string", options={"comments": "小地名"})
+     * @ORM\Column(name="land_name", type="string", options={"comment": "小地名"})
      */
     private $landName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tree_type", type="string", options={"comments": "树种"})
+     * @ORM\Column(name="tree_type", type="string", options={"comment": "树种"})
      */
     private $treeType;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="valid", type="string", options={"comments": "林地使用期限"})
+     * @ORM\Column(name="valid", type="string", options={"comment": "林地使用期限"})
      */
     private $valid;
 
@@ -137,14 +137,14 @@ class WoodlandRights
     /**
      * @var string
      *
-     * @ORM\Column(name="authorized_date", type="string", options={"comments": "发证日期"})
+     * @ORM\Column(name="authorized_date", type="string", options={"comment": "发证日期"})
      */
     private $authorizedDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="processor", type="string", options={"comments": "经办人"})
+     * @ORM\Column(name="processor", type="string", options={"comment": "经办人"})
      */
     private $processor;
 

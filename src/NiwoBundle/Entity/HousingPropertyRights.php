@@ -24,112 +24,112 @@ class HousingPropertyRights
     /**
      * @var string
      *
-     * @ORM\Column(name="property_number", type="string", length=32, unique=true, options={"comments":"产权证书号"})
+     * @ORM\Column(name="property_number", type="string", length=32, unique=true, options={"comment":"产权证书号"})
      */
     private $propertyNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_name", type="string", length=255, options={"comments":"户主姓名"})
+     * @ORM\Column(name="owner_name", type="string", length=255, options={"comment":"户主姓名"})
      */
     private $ownerName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_id", type="string", length=18, options={"comments":"户主身份证号码"})
+     * @ORM\Column(name="owner_id", type="string", length=18, options={"comment":"户主身份证号码"})
      */
     private $ownerId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_id_hash", type="string", length=255, options={"comments":"户主身份证号码hash"})
+     * @ORM\Column(name="owner_id_hash", type="string", length=255, options={"comment":"户主身份证号码hash"})
      */
     private $ownerIdHash;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255, options={"comments":"房屋地址"})
+     * @ORM\Column(name="address", type="string", length=255, options={"comment":"房屋地址"})
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comm_name", type="string", length=255, options={"comments": "村委会名称"})
+     * @ORM\Column(name="comm_name", type="string", length=255, options={"comment": "村委会名称"})
      */
     private $commName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comm_pp_name", type="string", length=255, options={"comments":"村委组名称"})
+     * @ORM\Column(name="comm_pp_name", type="string", length=255, options={"comment":"村委组名称"})
      */
     private $commPpName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="east", type="string", length=255, options={"comments":"东"})
+     * @ORM\Column(name="east", type="string", length=255, options={"comment":"东"})
      */
     private $east;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="south", type="string", length=255, options={"comments":"南"})
+     * @ORM\Column(name="south", type="string", length=255, options={"comment":"南"})
      */
     private $south;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="west", type="string", length=255, options={"comments":"西"})
+     * @ORM\Column(name="west", type="string", length=255, options={"comment":"西"})
      */
     private $west;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="north", type="string", length=255, options={"comments":"北"})
+     * @ORM\Column(name="north", type="string", length=255, options={"comment":"北"})
      */
     private $north;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="construction_area", type="float", options={"comments":"房屋建筑面积"})
+     * @ORM\Column(name="construction_area", type="float", options={"comment":"房屋建筑面积"})
      */
     private $constructionArea;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="house_area", type="float", options={"comments":"房屋占地面积"})
+     * @ORM\Column(name="house_area", type="float", options={"comment":"房屋占地面积"})
      */
     private $houseArea;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="house_style", type="string", length=255, options={"comments":"房屋结构"})
+     * @ORM\Column(name="house_style", type="string", length=255, options={"comment":"房屋结构"})
      */
     private $houseStyle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="authorized_date", type="string", length=8, nullable=true, options={"comments":"发证日期"})
+     * @ORM\Column(name="authorized_date", type="string", length=8, nullable=true, options={"comment":"发证日期"})
      */
     private $authorizedDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="authorized_dept", type="string", length=255, nullable=true, options={"comments":"发证机关"})
+     * @ORM\Column(name="authorized_dept", type="string", length=255, nullable=true, options={"comment":"发证机关"})
      */
     private $authorizedDept;
 

@@ -24,21 +24,21 @@ class PartyB
     /**
      * @var string
      *
-     * @ORM\Column(name="bc_id", type="string", length=255, unique=true, options={"comments":"身份链ID"})
+     * @ORM\Column(name="bc_id", type="string", length=255, unique=true, options={"comment":"身份链ID"})
      */
     private $bcId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, options={"comments":"乙方名称"})
+     * @ORM\Column(name="name", type="string", length=255, options={"comment":"乙方名称"})
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contact", type="string", length=255, options={"comments":"联系方式"})
+     * @ORM\Column(name="contact", type="string", length=255, options={"comment":"联系方式"})
      */
     private $contact;
 
