@@ -595,7 +595,7 @@ class Zhimi
             "comm_name" => $trans_data->village_committee ?? "",
             "comm_pp_name" => $trans_data->village_group ?? "",
             "owner_name" => $trans_data->householder_name ?? "",
-            "owner_id" => $trans_data->id ?? "",
+            "owner_id" => "{$trans_data->id}" ?? "",
             "owner_gender" => $trans_data->householder_sex ?? "",
             "owner_contact" => "",  // 暂无
             "owner_sid" => $trans_data->id_care ?? "",
