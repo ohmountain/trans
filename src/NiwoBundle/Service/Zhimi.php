@@ -977,17 +977,18 @@ class Zhimi
     {
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? "";
+        $id_hash = $parameter["id_hash"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
         $response = new JsonResponse();
 
         $response->setContent(json_encode([
             "ret_code" => 0,
             "value" => [
-                "hash" => "身证链ID hash (string)",
+                "hash" => hash("sha256", uniqid()),
                 "contract" => [
-                    "party_a" => "王诚信，李模范，赵先进",
-                    "party_a_id" => "38203822",
+                    "party_a" => "王诚信",
+                    "party_a_id" => $id,
                     "party_a_contact" => "085188823333",
                     "party_b" => "某某公司",
                     "party_b_id" => "38203822",
