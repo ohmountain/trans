@@ -611,7 +611,7 @@ class Zhimi
                 "block_name" => $block->name ?? "",
                 "block_area" => $block->area ?? "",
                 "block_type" => $block->status,
-                "block_no"   => $block->id ?? "",
+                "block_no"   => "{$block->id}" ?? "",
                 "block_coordinate" => $block->coordinate ?? "",
                 "block_shape" => $block->shapes ?? "",
                 "usage_status" => 1,          // 暂无
