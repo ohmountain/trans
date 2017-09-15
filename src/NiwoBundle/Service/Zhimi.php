@@ -1145,7 +1145,8 @@ class Zhimi
         $rental->setStartTime($contract["start_time"]);
         $rental->setEndTime($contract["start_time"]);
         $rental->setBlock($contract["block"]);
-        $rental->setExpense($contract["expense"]);
+        $rental->setBlockNo($contract["block"]["block_no"] ?? "");
+        $rental->setExpense($contract["expense"] ?? 0);
 
         $images = [];
 

@@ -97,6 +97,13 @@ class Rental
     private $block;
 
     /**
+     * @var block_no
+     *
+     * @ORM\Column(name="block_no", type="string")
+     */
+    private $block_no;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="images", type="array")
@@ -366,6 +373,31 @@ class Rental
     public function getBlock()
     {
         return $this->block;
+    }
+
+
+    /**
+     * Set block_no
+     *
+     * @param string $block_no
+     *
+     * @return Rental
+     */
+    public function setBlockNo($block_no)
+    {
+        $this->block_no = $block_no;
+
+        return $this;
+    }
+
+    /**
+     * Get block_no
+     *
+     * @return string
+     */
+    public function getBlockNo()
+    {
+        return $this->block_no;
     }
 
     /**
