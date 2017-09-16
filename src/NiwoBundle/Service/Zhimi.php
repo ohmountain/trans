@@ -1153,7 +1153,12 @@ class Zhimi
 
         foreach ($parameter["images"] as $k => $image) {
             $name = $hash ."_". $k;
-            $images[$k] = $this->saveBase64ToImage("data:image/png;base64," . $image, $name);
+
+            if ($image) {
+                $image = "data:image/png;base64," . $image;
+            }
+
+            $images[$k] = $this->saveBase64ToImage($image, $name);
         }
 
         $rental->setImages($images);
