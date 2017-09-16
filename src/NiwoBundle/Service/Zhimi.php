@@ -1133,6 +1133,8 @@ class Zhimi
 
         $contract = $parameter["contract"];
 
+        $this->container->get("logger")->debug("创建租赁信息", ["contract" => $contract]);
+
         $rental = new Rental();
 
         $rental->setPartyaName($contract["party_a"] ?? "");
