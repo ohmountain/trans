@@ -1144,7 +1144,7 @@ class Zhimi
         $rental->setHash($hash);
         $rental->setContentHash($content_hash);
         $rental->setStartTime($contract["start_time"]);
-        $rental->setEndTime($contract["start_time"]);
+        $rental->setEndTime($contract["end_time"]);
         $rental->setBlock($contract["block"]);
         $rental->setBlockNo($contract["block"]["block_no"] ?? "");
         $rental->setExpense($contract["expense"] ?? 0);
