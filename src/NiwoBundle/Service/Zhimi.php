@@ -1156,7 +1156,7 @@ class Zhimi
             $images[$k] = $this->saveBase64ToImage($image, $name);
         }
 
-        $this->container->get("logger")->debug("图片", $images, ["origin" => $contract["images"]]);
+        $this->container->get("logger")->debug("图片", ["origin" => $contract["images"]]);
 
         $rental->setImages($images);
 
