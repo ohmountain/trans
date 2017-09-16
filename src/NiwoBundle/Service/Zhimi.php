@@ -565,7 +565,7 @@ class Zhimi
 
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? '';
 
         $hash = hash("sha256", hash("sha256", "1{$id}"));
 
@@ -621,7 +621,7 @@ class Zhimi
                     "block_no"   => "{$block->id}" ?? "",
                     "block_coordinate" => $block->coordinate ?? "",
                     "block_shape" => $block->shapes ?? "",
-                    "usage_status" => 0,          // 暂无
+                    "usage_status" => 2,          // 暂无
                     "contract_id_hash" => ""      // 暂无
                 ];
 
@@ -664,7 +664,7 @@ class Zhimi
 
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? '';
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
         // $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
@@ -777,7 +777,7 @@ class Zhimi
 
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
         $res = $this->container->get("niwo.sanbian")->housing($id);
