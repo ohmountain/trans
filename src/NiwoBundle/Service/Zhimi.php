@@ -386,7 +386,7 @@ class Zhimi
     {
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? "";
 
         $hash = hash("sha256", hash("sha256", "1{$id}"));
 
