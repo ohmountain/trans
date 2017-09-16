@@ -1154,7 +1154,7 @@ class Zhimi
         foreach ($parameter["images"] as $k => $image) {
             $name = $hash ."_". $k;
 
-            if (count($image) > 63) {
+            if (strlen($image) > 10) {
                 $image = "data:image/png;base64," . $image;
             }
 
