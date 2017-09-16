@@ -1153,10 +1153,8 @@ class Zhimi
 
         foreach ($parameter["images"] as $k => $image) {
             $name = $hash ."_". $k;
-            $images[$k] = $this->saveBase64ToImage($image, $name);
+            $images[$k] = $this->saveBase64ToImage("data:image/png;base64," . $image, $name);
         }
-
-        $this->container->get("logger")->debug("图片", ["origin" => $parameter["images"]]);
 
         $rental->setImages($images);
 
