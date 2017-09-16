@@ -1151,7 +1151,7 @@ class Zhimi
 
         $images = [];
 
-        foreach ($contract["images"] as $k => $image) {
+        foreach ($parameter["images"] as $k => $image) {
             $name = $hash ."_". $k;
             $images[$k] = $this->saveBase64ToImage($image, $name);
         }
