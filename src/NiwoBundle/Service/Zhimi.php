@@ -1193,7 +1193,7 @@ class Zhimi
             "value" => [
                 "current" => $static,
                 "after" => $static + $area,
-                "percent" => $area / ($static + $area)
+                "percent" => round($area / ($static + $area), 2)
             ],
             "reason_string" => "获取成功"
         ]));
