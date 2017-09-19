@@ -10,4 +10,8 @@ namespace NiwoBundle\Repository;
  */
 class IntegrityRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByOwnerId(string $owner_id)
+    {
+        return $this->findBy(["ownerId" => $owner_id]);
+    }
 }

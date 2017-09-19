@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Integrity
  *
- * @ORM\Table(name="integrity")
+ * @ORM\Table(name="integrity", indexes={@ORM\Index(name="integrity_owner_id_index", columns={"owner_id"})})
  * @ORM\Entity(repositoryClass="NiwoBundle\Repository\IntegrityRepository")
  */
 class Integrity

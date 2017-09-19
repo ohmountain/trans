@@ -402,142 +402,184 @@ class Zhimi
          * 假设获取成功
          * ret_code 0
          */
+        // $response->setContent(json_encode([
+        //     "ret_code" => 0,
+        //     "value" => [
+        //         "hash" => md5(uniqid()),
+        //         "history" => [
+        //             [
+        //                 "category" => "金融信用",
+        //                 "history"  => [
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市花溪区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市白云区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市清镇",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ]
+        //                 ]
+        //             ],
+        //             [
+        //                 "category" => "公共服务",
+        //                 "history"  => [
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市花溪区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市白云区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市清镇",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ]
+        //                 ]
+        //             ],
+        //             [
+        //                 "category" => "公共信用",
+        //                 "history"  => [
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市花溪区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市白云区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市清镇",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ]
+        //                 ]
+        //             ],
+        //             [
+        //                 "category" => "司法信用",
+        //                 "history"  => [
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市花溪区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市白云区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市清镇",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ]
+        //                 ]
+        //             ],
+        //             [
+        //                 "category" => "其他",
+        //                 "history"  => [
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市花溪区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市白云区",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ],
+        //                     [
+        //                         "timestamp" => "20170101101326",
+        //                         "name" => "张三",
+        //                         "place" => "贵阳市清镇",
+        //                         "content" => "xxxxxxxxxxxxx",
+        //                         "cert" => hash("sha256", uniqid())
+        //                     ]
+        //                 ]
+        //             ],
+        //         ]
+        //     ]
+        // ]));
+
+        $integrities = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Integrity")->findByOwnerId($id);
+
+        $intes = [];
+
+        foreach ($integrities as $inte) {
+            if (!array_key_exists($inte->getCategory(), $intes)) {
+                $intes[$inte->getCategory()] = [];
+            }
+
+            $intes[$inte->getCategory()][] = [
+                "timestamp" => $inte->getTimestamp(),
+                "name" => $inte->getName(),
+                "place" => $inte->getPlace(),
+                "content" => $inte->getContent(),
+                "cert" => $inte->getCert()
+            ];
+        }
+
+        $final_data = [];
+
+        foreach ($intes as $k => $inte) {
+            $tmp = [];
+
+            $tmp["category"] = $k;
+            $tmp["history"]  = [];
+
+            foreach ($inte as $i) {
+                $tmp["history"][] = $i;
+            }
+
+            array_push($final_data, $tmp);
+        }
+
+
         $response->setContent(json_encode([
-            "ret_code" => 0,
+            "ret_value" => 0,
             "value" => [
-                "hash" => md5(uniqid()),
-                "history" => [
-                    [
-                        "category" => "金融信用",
-                        "history"  => [
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ]
-                        ]
-                    ],
-                    [
-                        "category" => "公共服务",
-                        "history"  => [
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ]
-                        ]
-                    ],
-                    [
-                        "category" => "公共信用",
-                        "history"  => [
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ]
-                        ]
-                    ],
-                    [
-                        "category" => "司法信用",
-                        "history"  => [
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ]
-                        ]
-                    ],
-                    [
-                        "category" => "其他",
-                        "history"  => [
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市花溪区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市白云区",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ],
-                            [
-                                "timestamp" => "20170101101326",
-                                "name" => "张三",
-                                "place" => "贵阳市清镇",
-                                "content" => "xxxxxxxxxxxxx",
-                                "cert" => hash("sha256", uniqid())
-                            ]
-                        ]
-                    ],
-                ]
+                "hash" => hash("sha256", hash("sha256", "1{$id}")),
+                "history" => $final_data
             ]
         ]));
 
