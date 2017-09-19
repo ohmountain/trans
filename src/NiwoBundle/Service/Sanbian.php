@@ -47,6 +47,25 @@ class Sanbian
 
         $data = json_decode($result->response, true);
 
+        /**
+         * 检测土地使用状态
+         */
+        $em  = $this->container->get("doctrine")->getManager();
+        $rep = $em->getRepository("NiwoBundle\Entity\Rental");
+
+        $rentals = $rep->findByPartyaIdNumber($id);
+        $lands = $data["value"][0]["land"] ?? [];
+
+        foreach($lands as $k => $land) {
+            foreach($rentals as $rental) {
+                if ($rental->getBlockNo() == $land["id"]) {
+                    $lands[$k]["useage_status"] = 1;
+                }
+            }
+        }
+
+        $data["value"][0]["land"] = $lands;
+
         return json_decode(json_encode([
             "error" => false,
             "message" => "",

@@ -16,4 +16,11 @@ class RentalRepository extends \Doctrine\ORM\EntityRepository
 
         return $res[0] ?? null;
     }
+
+    public function findbyPartyaIdNumber(string $id)
+    {
+        $res = $this->findBy(["partyaId" => $id]);
+
+        return $res;
+    }
 }

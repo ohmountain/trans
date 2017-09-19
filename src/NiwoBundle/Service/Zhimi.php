@@ -951,7 +951,7 @@ class Zhimi
     {
         $id_type = $parameter["id_type"];
         $id      = $parameter["id"];
-        $sig     = $parameter["sig"] ?? null;
+        $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
         $response = new JsonResponse();
@@ -965,7 +965,7 @@ class Zhimi
             ]
         ]));
 
-        $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取社会救助信息", $sig);
+        $this->sendCert("", $this->getDid($hash), $hash, ["eligibility"], "获取社会救助信息", $sig);
 
         return $response;
     }
