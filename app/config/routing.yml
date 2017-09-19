@@ -1,3 +1,7 @@
+niwo_integrity:
+    resource: "@NiwoBundle/Controller/IntegrityController.php"
+    type:     annotation
+
 niwo:
     resource: "@NiwoBundle/Resources/config/routing.yml"
     prefix:   /
