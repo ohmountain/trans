@@ -1035,6 +1035,8 @@ class Zhimi
             }
 
             $blocks["owner_name"] = $rental->getPartyaName();
+            $blocks["distribution"] = round($rental->getBlockArea() / $total_area, 4);
+            $blocks["usage_status"] = 1;
             $contract["block"] = $blocks;
 
             foreach ($blocks as $k => $v) {
@@ -1043,22 +1045,8 @@ class Zhimi
                 }
             }
 
-            $blocks["distribution"] = 20.22;
             $blocks["usage_status"] = 1;
             $contract["block"] = [$blocks];
-
-            $contract["block"] = 
-                               [
-                                   "owner_name" => "王诚信",
-                                   "block_name" => "地块1",
-                                   "block_area" => "123.23",
-                                   "block_type" => "田",
-                                   "block_no" => "1234343555",
-                                   "block_coordinate" => "x24534342.120,Y34343434.309",
-                                   "block_shape" => "方形",
-                                   "usage_status" => 1,
-                                   "distribution" => round($rental->getBlockArea() / $total_area, 4)
-                               ];
 
         }
 
