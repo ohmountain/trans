@@ -1117,10 +1117,12 @@ class Zhimi
 
         if ($rental != null) {
             foreach ($rental->getImages() as $image) {
+                if ($image == "") continue;
                 array_push($images, [
                     "url" => $image
                 ]);
             }
+
             $content_hash = $rental->getContentHash();
             $rental_hash  = $rental->getHash();
         }
