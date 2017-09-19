@@ -1002,8 +1002,17 @@ class Zhimi
             $contract["party_b_contact"] = $rental->getPartybContact();
             $contract["start_time"] = $rental->getStartTime();
             $contract["end_time"] = $rental->getEndTime();
-            $contract["block"] = $rental->getBlock();
         }
+
+        $blocks = $rental->getBlock();
+
+        foreach ($blocks as $k => $v) {
+            if ($v == null) {
+                $blocks[$k] = "";
+            }
+        }
+
+        $contract["block"] = $blocks;
 
         $ret_data = [
             "ret_code" => 0,
