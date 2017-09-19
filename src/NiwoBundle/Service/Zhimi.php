@@ -1022,7 +1022,7 @@ class Zhimi
                 }
             }
 
-            $blocks["distribution"] = $blocks["block_area"];
+            $blocks["distribution"] = 20.22;
             $blocks["usage_status"] = 1;
             $contract["block"] = [$blocks];
 
