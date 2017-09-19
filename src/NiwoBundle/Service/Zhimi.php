@@ -1019,6 +1019,7 @@ class Zhimi
                 }
             }
 
+            $blocks["distribution"] = "22";
             $contract["block"] = $blocks;
 
         }
