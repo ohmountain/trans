@@ -578,7 +578,7 @@ class Zhimi
         $response->setContent(json_encode([
             "ret_value" => 0,
             "value" => [
-                "hash" => md5(hash("sha256", hash("sha256", "1{$id}"))),
+                "hash" => hash("sha256", hash("sha256", "1{$id}")),
                 "history" => $final_data
             ]
         ]));
