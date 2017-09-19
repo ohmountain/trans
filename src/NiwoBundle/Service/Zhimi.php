@@ -543,7 +543,13 @@ class Zhimi
 
         $integrities = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Integrity")->findByOwnerId($id);
 
-        $intes = [];
+        $intes = [
+            "公共服务" => [],
+            "金融信用" => [],
+            "司法信用" => [],
+            "公共信用" => [],
+            "其他"     => []
+        ];
 
         foreach ($integrities as $inte) {
             if (!array_key_exists($inte->getCategory(), $intes)) {
