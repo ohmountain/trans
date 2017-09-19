@@ -614,6 +614,10 @@ class Zhimi
 
         if (is_object($trans_data)) {
             foreach ($trans_data->land as $block) {
+                $status = 1;
+                if ($block->usage_status != 1) {
+                    $status = 2;
+                }
                 $tmp = [
                     "block_name" => $block->name ?? "",
                     "block_area" => "{$block->area}" ?? "",
@@ -621,7 +625,7 @@ class Zhimi
                     "block_no"   => "{$block->id}" ?? "",
                     "block_coordinate" => $block->coordinate ?? "",
                     "block_shape" => $block->shapes ?? "",
-                    "usage_status" => 2,          // 暂无
+                    "usage_status" => $status,          // 暂无
                     "contract_id_hash" => ""      // 暂无
                 ];
 

@@ -59,7 +59,7 @@ class Sanbian
         foreach($lands as $k => $land) {
             foreach($rentals as $rental) {
                 if ($rental->getBlockNo() == $land["id"]) {
-                    $lands[$k]["useage_status"] = 1;
+                    $lands[$k]["usage_status"] = 1;
                 }
             }
         }
