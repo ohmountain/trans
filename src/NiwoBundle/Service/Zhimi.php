@@ -995,15 +995,15 @@ class Zhimi
 
         if ($rental) {
             $contract["modification_flag"] = true;
-            $contract["party_a"] = $rental->getPartyaName();
-            $contract["party_a_id"] = $id;
-            $contract["party_a_contact"] = $rental->getPartyaContact();
-            $contract["party_b"] = $rental->getPartybName();
-            $contract["party_b_id"] = $rental->getPartybId();
-            $contract["party_b_contact"] = $rental->getPartybContact();
-            $contract["expense"] = $rental->getExpense();
-            $contract["start_time"] = $rental->getStartTime();
-            $contract["end_time"] = $rental->getEndTime();
+            $contract["party_a"] = $rental->getPartyaName() ?? "";
+            $contract["party_a_id"] = $id ?? "";
+            $contract["party_a_contact"] = $rental->getPartyaContact() ?? "";
+            $contract["party_b"] = $rental->getPartybName() ?? "";
+            $contract["party_b_id"] = $rental->getPartybId() ?? "";
+            $contract["party_b_contact"] = $rental->getPartybContact() ?? "";
+            $contract["expense"] = $rental->getExpense() ?? 0;
+            $contract["start_time"] = $rental->getStartTime() ?? "";
+            $contract["end_time"] = $rental->getEndTime() ?? "";
 
             $blocks = $rental->getBlock();
 
@@ -1011,6 +1011,14 @@ class Zhimi
                 if ($v == null) {
                     $blocks[$k] = "";
                 }
+            }
+
+            $rentals = $rep->findAll();
+
+            $total_area = 0;
+
+            foreach ($rentals as $r) {
+                $total_area += $r->getBlockArea() ?? 0;
             }
 
             $blocks["owner_name"] = $rental->getPartyaName();
@@ -1036,7 +1044,7 @@ class Zhimi
                                    "block_coordinate" => "x24534342.120,Y34343434.309",
                                    "block_shape" => "方形",
                                    "usage_status" => 1,
-                                   "distribution" => 0.32
+                                   "distribution" => round($rental->getBlockArea() / $total_area)
                                ];
 
         }
@@ -1188,6 +1196,7 @@ class Zhimi
         $rental->setBlock($contract["block"]);
         $rental->setBlockNo($contract["block"]["block_no"] ?? "");
         $rental->setExpense($contract["expense"] ?? 0);
+        $rental->setBlockArea($contract["block"]["block_area"] ?? 0);
 
         $images = [];
 

@@ -103,6 +103,14 @@ class Rental
      */
     private $block_no;
 
+
+    /**
+     * @var block_area
+     *
+     * @ORM\Column(name="block_area", type="float")
+     */
+    private $block_area;
+
     /**
      * @var array
      *
@@ -398,6 +406,28 @@ class Rental
     public function getBlockNo()
     {
         return $this->block_no;
+    }
+
+    /**
+     * Set block_area
+     *
+     * @return Rental
+     */
+    public function setBlockArea($block_area)
+    {
+        $this->block_area = $block_area;
+
+        return $this;
+    }
+
+    /**
+     * Get block_area
+     *
+     * @return float
+     */
+    public function getBlockArea()
+    {
+        return $this->block_area;
     }
 
     /**
