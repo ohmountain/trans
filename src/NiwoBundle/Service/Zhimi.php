@@ -989,7 +989,7 @@ class Zhimi
         $em = $this->container->get("doctrine")->getManager();
         $rep = $em->getRepository("NiwoBundle\Entity\Rental");
 
-        $this->container->get("logger")->debug("获取租赁信息请求参数": ["parameters" => $parameter]);
+        $this->container->get("logger")->debug("获取租赁信息请求参数", ["parameters" => $parameter]);
 
         $rental = $rep->findByHash($id_hash);
 
