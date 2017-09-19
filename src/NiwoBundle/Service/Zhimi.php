@@ -612,12 +612,23 @@ class Zhimi
             "block" => []
         ];
 
+        $rentals = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Rental")->findAll();
+
         if (is_object($trans_data)) {
             foreach ($trans_data->land as $block) {
                 $status = 1;
                 if ($block->usage_status != 1) {
                     $status = 2;
                 }
+
+                $contract_id_hash = "";
+
+                foreach ($rentals as $r) {
+                    if ($r->getBlockNo() == $block->id) {
+                        $contract_id_hash = $r->getHash();
+                    }
+                }
+
                 $tmp = [
                     "block_name" => $block->name ?? "",
                     "block_area" => "{$block->area}" ?? "",
@@ -626,7 +637,7 @@ class Zhimi
                     "block_coordinate" => $block->coordinate ?? "",
                     "block_shape" => $block->shapes ?? "",
                     "usage_status" => $status,          // 暂无
-                    "contract_id_hash" => ""      // 暂无
+                    "contract_id_hash" => $contract_id_hash      // 暂无
                 ];
 
                 array_push($ownership["block"], $tmp);
