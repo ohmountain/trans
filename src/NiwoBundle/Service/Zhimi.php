@@ -1044,7 +1044,7 @@ class Zhimi
                                    "block_coordinate" => "x24534342.120,Y34343434.309",
                                    "block_shape" => "方形",
                                    "usage_status" => 1,
-                                   "distribution" => round($rental->getBlockArea() / $total_area)
+                                   "distribution" => round($rental->getBlockArea() / $total_area, 4)
                                ];
 
         }
