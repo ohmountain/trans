@@ -1000,6 +1000,7 @@ class Zhimi
             $contract["party_b"] = $rental->getPartybName();
             $contract["party_b_id"] = $rental->getPartybId();
             $contract["party_b_contact"] = $rental->getPartybContact();
+            $contract["expense"] = $rental->getExpense();
             $contract["start_time"] = $rental->getStartTime();
             $contract["end_time"] = $rental->getEndTime();
 
