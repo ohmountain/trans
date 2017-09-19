@@ -994,6 +994,7 @@ class Zhimi
         $contract = [];
 
         if ($rental) {
+            $contract["modification_flag"] = true;
             $contract["party_a"] = $rental->getPartyaName();
             $contract["party_a_id"] = $id;
             $contract["party_a_contact"] = $rental->getPartyaContact();
@@ -1012,6 +1013,7 @@ class Zhimi
                 }
             }
 
+            $blocks["owner_name"] = $rental->getPartyaName();
             $contract["block"] = $blocks;
 
             foreach ($blocks as $k => $v) {
@@ -1021,6 +1023,7 @@ class Zhimi
             }
 
             $blocks["distribution"] = "22";
+            $blocks["usage_status"] = 1;
             $contract["block"] = $blocks;
 
         }
