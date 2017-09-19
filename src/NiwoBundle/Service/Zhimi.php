@@ -986,37 +986,35 @@ class Zhimi
         $hash    = hash("sha256", hash("sha256", "1".$id));
         $response = new JsonResponse();
 
-        $response->setContent(json_encode([
+        $em = $this->container->get("doctrine")->getManager();
+        $rep = $em->getRepository("NiwoBundle\Entity\Rental");
+
+        $rental = $rep->findByHash($id_hash);
+
+        $contract = [];
+
+        if ($rental) {
+            $contract["party_a"] = $rental->getPartyaName();
+            $contract["party_a_id"] = $id;
+            $contract["party_a_contact"] = $rental->getPartyaContact();
+            $contract["party_b"] = $rental->getPartybName();
+            $contract["party_b_id"] = $rental->getPartybId();
+            $contract["party_b_contact"] = $rental->getPartybContact();
+            $contract["start_time"] = $rental->getStartTime();
+            $contract["end_time"] = $rental->getEndTime();
+            $contract["block"] = $rental->getBlock();
+        }
+
+        $ret_data = [
             "ret_code" => 0,
             "value" => [
-                "hash" => hash("sha256", uniqid()),
-                "contract" => [
-                    "party_a" => "王诚信",
-                    "party_a_id" => $id,
-                    "party_a_contact" => "085188823333",
-                    "party_b" => "某某公司",
-                    "party_b_id" => "38203822",
-                    "party_b_contact" => "085188823333",
-                    "start_time" => "19000101",
-                    "end_time" => "20000101",
-                    "expense" => 90000,
-                    "block" => [
-                        [
-                            "owner_name" => "王诚信",
-                            "block_name" => "地块1",
-                            "block_area" => "123.23",
-                            "block_type" => "田",
-                            "block_no" => "1234343555",
-                            "block_coordinate" => "x24534342.120,Y34343434.309",
-                            "block_shape" => "方形",
-                            "usage_status" => 1,
-                            "distribution" => 0.32
-                        ]
-                    ]
-                ],
+                "hash" => $id_hash,
+                "contract" => $contract,
                 "reason_string" => ""
             ]
-        ]));
+        ];
+
+        $response->setContent(json_encode($ret_data));
 
         $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取租赁信息", $sig);
         return $response;
