@@ -1047,7 +1047,6 @@ class Zhimi
 
             $blocks["usage_status"] = 1;
             $contract["block"] = [$blocks];
-
         }
 
         $ret_data = [
@@ -1135,6 +1134,10 @@ class Zhimi
             $content_hash = $rental->getContentHash();
             $rental_hash  = $rental->getHash();
         }
+
+
+
+        $images = array_reverse($images);
 
         $curl = new Curl();
         $block_info_api = $this->container->getParameter("niwo")["chain"]["block_info_api"];
