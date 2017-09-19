@@ -1119,7 +1119,7 @@ class Zhimi
             foreach ($rental->getImages() as $image) {
                 if ($image == "") continue;
                 array_push($images, [
-                    "url" => isset($_SERVER['SERVER_ADDR']) ?  "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_NAME']}".$image : $image
+                    "url" => isset($_SERVER['SERVER_ADDR']) ?  "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image : $image
                 ]);
             }
 
