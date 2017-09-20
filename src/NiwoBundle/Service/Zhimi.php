@@ -1301,8 +1301,13 @@ class Zhimi
         // 1. 查出所有合同的面积
         // 2. 加上新合同的面积后计算新合同的股权占比
 
-        // 虚假面积变量
-        $static = 8;
+        $rentals = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Rental")->findAll();
+
+        $static = 0;
+
+        foreach ($rentals as $rental) {
+            $static += $rental->getBlockArea();
+        }
 
         $area = $parameter["area"];
 
