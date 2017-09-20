@@ -641,60 +641,26 @@ class Zhimi
             return $response;
         }
 
-        $trans_data = $result->data[0];
+        $trans_data = $result->data;
 
         $owner_id = "";
 
-        if (is_array($trans_data) && $trans_data->id) {
-            $owner_id = "{$trans_data->id}";
-        }
-
         $ownership = [
-            "comm_name" => $trans_data->village_committee ?? "",
-            "comm_pp_name" => $trans_data->village_group ?? "",
-            "owner_name" => $trans_data->householder_name ?? "",
-            "owner_id" => $owner_id,
-            "owner_gender" => $trans_data->householder_sex ?? "",
+            "comm_name" => $trans_data->comm_name ?? "",
+            "comm_pp_name" => $trans_data->comm_pp_name ?? "",
+            "owner_name" => $trans_data->owner_name ?? "",
+            "owner_id" => $trans_data->owner_id ?? "",
+            "owner_gender" => $trans_data->owner_gender ?? "",
             "owner_contact" => "",  // 暂无
-            "owner_sid" => $trans_data->id_care ?? "",
-            "family_name" => $trans_data->family[0]->name ?? "",
-            "family_gender" => $trans_data->family[0]->sex ?? "",
-            "family_sid" => $trans_data->family[0]->id_care ?? "",
-            "relationship" => $trans_data->family[0]->relationship ?? "",
-            "block" => []
+            "owner_sid" => $trans_data->owner_sid ?? "",
+            "family_name" => $trans_data->family_name ?? "",
+            "family_gender" => $trans_data->family_gender ?? "",
+            "family_sid" => $trans_data->family_sid ?? "",
+            "relationship" => $trans_data->relationship ?? "",
+            "block" => $trans_data->block ?? []
         ];
 
         $rentals = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Rental")->findAll();
-
-        if (is_object($trans_data)) {
-            foreach ($trans_data->land as $block) {
-                $status = 1;
-                if ($block->usage_status != 1) {
-                    $status = 2;
-                }
-
-                $contract_id_hash = "";
-
-                foreach ($rentals as $r) {
-                    if ($r->getBlockNo() == $block->id) {
-                        $contract_id_hash = $r->getHash();
-                    }
-                }
-
-                $tmp = [
-                    "block_name" => $block->name ?? "",
-                    "block_area" => "{$block->area}" ?? "",
-                    "block_type" => $block->status,
-                    "block_no"   => "{$block->id}" ?? "",
-                    "block_coordinate" => $block->coordinate ?? "",
-                    "block_shape" => $block->shapes ?? "",
-                    "usage_status" => $status,          // 暂无
-                    "contract_id_hash" => $contract_id_hash      // 暂无
-                ];
-
-                array_push($ownership["block"], $tmp);
-            }
-        }
 
         $data = [
             'ret_code' => 0,

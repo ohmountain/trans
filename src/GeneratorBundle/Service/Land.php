@@ -91,7 +91,7 @@ class Land
             $j = $i + 1;
 
             $block->setBlockName("地块$j");
-            $block->setBlockArea(rand(1, 10) / rand(1, 10));
+            $block->setBlockArea(round(rand(1, 10) / rand(1, 10), 2));
             $block->setBlockType(["田", "地"][array_rand([1,2])]);
             $block->setBlockNo(1000 + $i);
             $block->setBlockShape("方形");

@@ -26,54 +26,55 @@ class Sanbian
      */
     public function land(string $id): \stdClass
     {
-        $curl = new Curl();
 
-        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
-        $url  = $this->container->getParameter("niwo")["sanbian"]["land"];
-        $url  = "{$url}?idCare={$id}";
+        $em = $this->container->get("doctrine")->getManager();
+        $rep = $em->getRepository("NiwoBundle\Entity\LandRights");
 
-        $result = $curl->get($url);
+        $person = $rep->findBy(["ownerSid" => $id]);
 
-        if ($result->error == true) {
-
-            $this->container->get("logger")->error("获取土地确权信息出错",["url" => $url, "message" => $result->error_message]);
-
-           return json_decode(json_encode([
-                    "error" => true,
-                    "message" => $result->error_message,
-                    "data" => null
-                ]));
+        if (count($person) == 0) {
+            return json_decode(json_encode([
+                "error" => false,
+                "message" => "",
+                "data" => []
+            ]));
         }
 
-        $data = json_decode($result->response, true);
+        $data = [];
 
-        /**
-         * 检测土地使用状态
-         */
-        $em  = $this->container->get("doctrine")->getManager();
-        $rep = $em->getRepository("NiwoBundle\Entity\Rental");
+        $p = $person[0];
 
-        $rentals = $rep->findByPartyaIdNumber($id);
-        $lands = $data["value"][0]["land"] ?? [];
+        $data = [
+            "comm_name" => $p->getCommName(),
+            "comm_pp_name" => $p->getCommPpName(),
+            "owner_id" => $p->getOwnerId(),
+            "owner_name" => $p->getOwnerName(),
+            "owner_gender" => $p->getOwnerGender(),
+            "owner_sid" => $p->getOwnerSid(),
+            "family_name" => $p->getFamilyName(),
+            "family_sid" => $p->getFamilySid(),
+            "family_gender" => $p->getFamilyGender(),
+            "relationship" => $p->getRelationship(),
+            "block" => []
+        ];
 
-        foreach($lands as $k => $land) {
-            foreach($rentals as $rental) {
-                if ($rental->getBlockNo() == $land["id"]) {
-                    $lands[$k]["usage_status"] = 1;
-                }
-            }
+        foreach ($p->getBlocks() as $block) {
+            $data["block"][] = [
+                "block_name" => $block->getBlockName(),
+                "block_area" => $block->getBlockArea(),
+                "block_type" => $block->getBlockType(),
+                "block_no"   => $block->getBlockNo(),
+                "block_coordinate" => $block->getBlockCoordinate(),
+                "block_shape" => $block->getBlockShape(),
+                "usage_status" => $block->getUsageStatus()
+            ];
         }
 
-        if (!is_array($data["value"])) {
-            $data["value"] = [];
-        }
-
-        $data["value"][0]["land"] = $lands;
 
         return json_decode(json_encode([
             "error" => false,
             "message" => "",
-            "data" => $data["value"]
+            "data" => $data
         ]));
     }
 
