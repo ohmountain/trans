@@ -1,0 +1,4 @@
+services:
+   # generator.land:
+   #     class: GeneratorBundle\Service\Land;
+   #     arguments: ["@service_container"]

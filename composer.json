@@ -6,7 +6,8 @@
         "psr-4": {
             "AppBundle\\": "src/AppBundle",
             "ApiBundle\\": "src/ApiBundle",
-            "NiwoBundle\\": "src/NiwoBundle"
+            "NiwoBundle\\": "src/NiwoBundle",
+            "GeneratorBundle\\": "src/GeneratorBundle"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -71,5 +72,9 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": null
+    },
+    "packagist": {
+        "type": "composer",
+        "url": "https://packagist.phpcomposer.com"
     }
 }

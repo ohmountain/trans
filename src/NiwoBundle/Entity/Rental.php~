@@ -502,3 +502,4 @@ class Rental
         return $this->content_hash;
     }
 }
+
