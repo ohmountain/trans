@@ -88,31 +88,46 @@ class Sanbian
      */
     public function woodland(string $id): \stdClass
     {
-        $curl = new Curl();
+        $em = $this->container->get("doctrine")->getManager();
+        $rep = $em->getRepository("NiwoBundle\Entity\WoodlandRights");
 
-        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
-        $url  = $this->container->getParameter("niwo")["sanbian"]["woodland"];
-        $url  = "{$url}?idCare={$id}";
 
-        $result = $curl->get($url);
+        $data = [];
+        $woodlands = $rep->findByOwnerId($id);
 
-        if ($result->error == true) {
-
-            $this->container->get("logger")->error("获取林权信息出错",["url" => $url, "message" => $result->error_message]);
+        if (!$woodlands) {
 
             return json_decode(json_encode([
-                "error" => true,
-                "message" => $result->error_message,
-                "data" => null
+                "error" => false,
+                "message" => "",
+                "data" => []
             ]));
         }
 
-        $data = json_decode($result->response, true);
+        foreach ($woodlands as $w) {
+            array_push($data, [
+                "country_name" => $w->getCountryName(),
+                "comm_name" => $w->getCommName(),
+                "comm_pp_name" => $w->getCommPpName(),
+                "owner_name" => $w->getOwnerName(),
+                "east" => $w->getEast(),
+                "north" => $w->getNorth(),
+                "west" => $w->getWest(),
+                "south" => $w->getSouth(),
+                "woodland_id" => $w->getWoodlandId(),
+                "map_author" => $w->getMapAuthor(),
+                "land_name" => $w->getLandName(),
+                "tree_type" => $w->getTreeType(),
+                "valid" => $w->getValid(),
+                "authorized_date" => $w->getAuthorizedDate(),
+                "processor" => $w->getProcessor()
+            ]);
+        };
 
         return json_decode(json_encode([
             "error" => false,
             "message" => "",
-            "data" => $data["value"]
+            "data" => $data
         ]));
     }
 
@@ -126,31 +141,44 @@ class Sanbian
      */
     public function housing(string $id): \stdClass
     {
-        $curl = new Curl();
+        $em = $this->container->get("doctrine")->getManager();
+        $rep = $em->getRepository("NiwoBundle\Entity\HousingPropertyRights");
 
-        $curl->setOpt(CURLOPT_TIMEOUT, $this->container->getParameter("niwo")["sanbian"]["timeout"]);
-        $url  = $this->container->getParameter("niwo")["sanbian"]["housing"];
-        $url  = "{$url}?idCare={$id}";
+        $houses = $rep->findByOwnerId($id);
 
-        $result = $curl->get($url);
-
-        if ($result->error == true) {
-
-            $this->container->get("logger")->error("获取房屋产权信息出错",["url" => $url, "message" => $result->error_message]);
-
+        if (!$houses) {
             return json_decode(json_encode([
-                "error" => true,
-                "message" => $result->error_message,
-                "data" => null
+                "error" => false,
+                "message" => "无房屋产权信息",
+                "data" => []
             ]));
         }
 
-        $data = json_decode($result->response, true);
+
+        $data = [];
+
+        foreach ($houses as $h) {
+            array_push($data, [
+                "address" => $h->getAddress(),
+                "comm_name" => $h->getCommName(),
+                "comm_pp_name" => $h->getCommPpName(),
+                "east" => $h->getEast(),
+                "north" => $h->getNorth(),
+                "west" => $h->getWest(),
+                "south" => $h->getSouth(),
+                "construction_area" => $h->getConstructionArea(),
+                "house_are" => $h->getHouseArea(),
+                "owner_name" => $h->getOwnerName(),
+                "house_style" => $h->getHouseStyle(),
+                "authorized_date" => $h->getAuthorizedDate(),
+                "authorized_dept" => $h->getAuthorizedDept()
+            ]);
+        }
 
         return json_decode(json_encode([
             "error" => false,
             "message" => "",
-            "data" => $data["value"]
+            "data" => $data
         ]));
     }
 }

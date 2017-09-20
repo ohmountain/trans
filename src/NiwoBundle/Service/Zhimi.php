@@ -700,19 +700,9 @@ class Zhimi
         $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
-        // $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
+        $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
 
-        // $rights = $rep->findByOwnerId($id);
-
-        // if ($rights === null) {
-        //     $response->setContent(json_encode([
-        //         'code' => 0,
-        //         'value' => null,
-        //         'reason_string' => "无数据"
-        //     ]));
-
-        //     return $response;
-        // }
+        $rights = $rep->findByOwnerId($id);
 
         $data = [];
 
@@ -733,56 +723,11 @@ class Zhimi
             return $response;
         }
 
-        try {
-            foreach ($result->data  as $res) {
-                array_push($data, [
-                    "country_name" => $res->address ?? "",
-                    "comm_name"    => $res->village_committee ?? "",
-                    "comm_pp_name" => $res->village_committee ?? "",
-                    "owner_name"   => $res->householder_name ?? "",
-                    "east"         => $res->east ?? "",
-                    "south"        => $res->south ?? "",
-                    "west"         => $res->west ?? "",
-                    "north"        => $res->north ?? "",
-                    "woodland_id"  => "{$res->id}" ?? "",
-                    "map_author"   => $res->mapper ?? "",
-                    "land_name"    => $res->toponymy ?? "",
-                    // "tree_type"    => $res->tree_type,
-                    "tree_type"    => "",
-                    "valid"        => $res->trees_varieties ?? "",
-                    "authorized_date" => $res->date_issue ?? "",
-                    "processor"    => $res->responsible_person ?? ""
-                ]);
-            }
-        } catch (\Exception $e) {
-            $this->container->get("logger")->error("转换林权信息出错", ["message" => $e->getMessage()]);
-        }
-
-        // foreach ($rights as $right) {
-        //     array_push($data, [
-        //         "country_name" => $right->getCountryName(),
-        //         "comm_name" => $right->getCommName(),
-        //         "comm_pp_name" => $right->getCommPpName(),
-        //         "owner_name" => $right->getOwnerName(),
-        //         "east" => $right->getEast(),
-        //         "south" => $right->getSouth(),
-        //         "west" => $right->getWest(),
-        //         "north" => $right->getNorth(),
-        //         "woodland_id" => $right->getWoodlandId(),
-        //         "map_author" => $right->getMapAuthor(),
-        //         "land_name" => $right->getLandName(),
-        //         "tree_type" => $right->getTreeType(),
-        //         "valid" => $right->getValid(),
-        //         "authorized_date" => $right->getAuthorizedDate(),
-        //         "processor" => $right->getProcessor()
-        //     ]);
-        // }
-
         $response->setContent(json_encode([
             'code' => 0,
             'value' => [
                 'hash' => hash("sha256", hash("sha256", $id)),
-                "ownership" => $data
+                "ownership" => $result->data
             ]
         ]));
 
@@ -825,31 +770,6 @@ class Zhimi
             return $response;
         }
 
-        $data = [];
-
-        if (is_array($res->data)) {
-            foreach ($res->data as $house) {
-                try {
-                    array_push($data, [
-                        "address" => $house->address,
-                        "comm_name" => $house->village_committee,
-                        "comm_pp_name" => $house->village_group,
-                        "east" => $house->east,
-                        "north" => $house->north,
-                        "west" => $house->west,
-                        "south" => $house->south,
-                        "construction_area" => $house->floor_area,
-                        "house_area" => $house->floor_space,
-                        "owner_name" => $house->householder_name,
-                        "house_style" => $house->structure,
-                        "authorized_date" => "",    // 暂无
-                        "authorized_dept" => "",    // 暂无
-                    ]);
-                } catch(\Exception $e) {
-                    $this->container->get("logger")->error("转换房屋产权信息出错", ["message" => $e->getMessage()]);
-                }
-            }
-        }
 
         // // 虚假数据，用于开发
         // $data = [[
@@ -872,7 +792,7 @@ class Zhimi
             'ret_code' => 0,
             'value' => [
                 'hash' => hash('sha256', hash('sha256', '1')),
-                'ownership' => $data
+                'ownership' => $res->data
             ],
             'reason_string' => '获取成功'
         ]));
