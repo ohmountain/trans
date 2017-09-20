@@ -64,6 +64,10 @@ class Sanbian
             }
         }
 
+        if (!is_array($data["value"])) {
+            $data["value"] = [];
+        }
+
         $data["value"][0]["land"] = $lands;
 
         return json_decode(json_encode([

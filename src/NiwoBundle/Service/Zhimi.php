@@ -1438,6 +1438,9 @@ class Zhimi
     }
 
 
+    /**
+     * 获取乙方信息
+     */
     private function getPartyB(): JsonResponse
     {
         $response = new JsonResponse();
