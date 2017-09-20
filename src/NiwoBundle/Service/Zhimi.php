@@ -42,10 +42,10 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
-                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
             ]));
 
             return $response;
@@ -186,6 +186,10 @@ class Zhimi
 
         if ($op_type == 12) {
             return $this->equityProportion($parameter);
+        }
+
+        if ($op_type == 13) {
+            return $this->getPartyB();
         }
     }
 
@@ -1432,4 +1436,22 @@ class Zhimi
 
         return $result[0]->getBcId();
     }
+
+
+    private function getPartyB(): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $response->setContent(json_encode([
+            "ret_code" => 0,
+            "value" => [
+                "partyb_name" => "清镇市凤山土地林地股份合作社",
+                "partyb_id"   => "53421928103944",
+                "partyb_contact" => "085155554444"
+            ]
+        ]));
+
+        return $response;
+    }
+
 }
