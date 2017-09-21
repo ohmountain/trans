@@ -1076,7 +1076,9 @@ class Zhimi
 
                 $url = "";
 
-                $img_info = getimagesize($web_dir . $image);
+                $image = $web_dir . $image;
+
+                $img_info = getimagesize($image);
 
                 $img_info = getimagesize($image);
                 $img_src = "data:{$img_info['mime']};base64," . base64_encode(file_get_contents($image));
