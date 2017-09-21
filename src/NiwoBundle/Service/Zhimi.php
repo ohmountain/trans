@@ -1179,6 +1179,16 @@ class Zhimi
         $rental->setImages($images);
 
         $em = $this->container->get("doctrine")->getManager();
+
+        $block = $em->getRepository("NiwoBundle\Entity\LandBlock")->findBy([
+            "blockNo" => $rental->getBlockNo()
+        ]);
+
+        if (count($block) > 0) {
+            $block[0]->setUsageStatus(1);
+            $em->persist($block[0]);
+        }
+
         $em->persist($rental);
         $em->flush();
 
