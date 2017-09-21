@@ -909,11 +909,24 @@ class Zhimi
 
         $response = new JsonResponse();
 
+        $assistance = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Assistance")->findBySid($id);
+
+        if ($assistance == null || $assistance->getEligibility() == false) {
+            return $response->setContent(json_encode([
+                "ret_code" => 0,
+                "value" => [
+                    "hash" => "",
+                    "cert" => "",
+                    "eligibility" => false
+                ]
+            ]));
+        }
+
         $response->setContent(json_encode([
             "ret_code" => 0,
             "value" => [
-                "hash" => hash("sha256", hash("sha256", 1)),
-                "cert" => hash("sha256", uniqid()),
+                "hash" => $assistance->getCert(),
+                "cert" => $assistance->getCert(),
                 "eligibility" => true
             ]
         ]));

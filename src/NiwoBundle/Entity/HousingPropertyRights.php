@@ -24,7 +24,7 @@ class HousingPropertyRights
     /**
      * @var string
      *
-     * @ORM\Column(name="property_number", type="string", length=32, unique=true, options={"comment":"产权证书号"})
+     * @ORM\Column(name="property_number", type="string", length=64, unique=true, options={"comment":"产权证书号"})
      */
     private $propertyNumber;
 
