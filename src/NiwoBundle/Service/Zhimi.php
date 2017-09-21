@@ -1186,6 +1186,7 @@ class Zhimi
 
         if (count($block) > 0) {
             $block[0]->setUsageStatus(1);
+            $block[0]->setContractIdHash($hash);
             $em->persist($block[0]);
         }
 
