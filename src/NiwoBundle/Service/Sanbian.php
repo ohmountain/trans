@@ -66,6 +66,7 @@ class Sanbian
                 "block_no"   => $block->getBlockNo(),
                 "block_coordinate" => $block->getBlockCoordinate(),
                 "block_shape" => $block->getBlockShape(),
+                "contract_id_hash" => $block->getContractIdHash(),
                 "usage_status" => $block->getUsageStatus()
             ];
         }
