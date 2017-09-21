@@ -1068,7 +1068,7 @@ class Zhimi
 
         if ($rental != null) {
 
-            $root_dir = $this->get("kernel")->getRootDir();
+            $root_dir = $this->container->get("kernel")->getRootDir();
             $web_dir = realpath($root_dir . "/../web");
 
             foreach ($rental->getImages() as $image) {
