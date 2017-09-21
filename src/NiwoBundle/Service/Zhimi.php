@@ -1072,7 +1072,7 @@ class Zhimi
                 $url = "";
 
                 if (isset($_SERVER['SERVER_ADDR'])) {
-                    $url = "http://" . "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image;
+                    $url = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != null) ? "https://" : "http://") . "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image;
                 } else {
                     $url = $image;
                 }
