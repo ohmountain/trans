@@ -1,5 +1,5 @@
 api_homepage:
-    path:     /
+    path:     /aabbcc
     defaults: { _controller: ApiBundle:Default:index }
 
 

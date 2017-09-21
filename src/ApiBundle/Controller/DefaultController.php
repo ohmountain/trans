@@ -14,6 +14,11 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $root_dir = $this->get("kernel")->getRootDir();
+        $web_dir = realpath($root_dir . "/../web");
+
+        dump($web_dir);
+        die;
         return Response::Json(Response::SUCCESS, "Welcom", true, []);
     }
 }

@@ -1065,17 +1065,30 @@ class Zhimi
         $content_hash = "";
         $contract_url = "";
 
+
         if ($rental != null) {
+
+            $root_dir = $this->get("kernel")->getRootDir();
+            $web_dir = realpath($root_dir . "/../web");
+
             foreach ($rental->getImages() as $image) {
                 if ($image == "") continue;
 
                 $url = "";
 
-                if (isset($_SERVER['SERVER_ADDR'])) {
-                    $url = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != null) ? "https://" : "http://") . "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image;
-                } else {
-                    $url = $image;
-                }
+                $img_info = getimagesize($web_dir . $image);
+
+                $img_info = getimagesize($image);
+                $img_src = "data:{$img_info['mime']};base64," . base64_encode(file_get_contents($image));
+
+                // if (isset($_SERVER['SERVER_ADDR'])) {
+                //     $url = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != null) ? "https://" : "http://") . "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image;
+                // } else {
+                //     $url = $image;
+                // }
+
+
+                $url = $img_src;
 
                 array_push($images, [
                     "url" => $url
