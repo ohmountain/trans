@@ -94,12 +94,13 @@ niwo:
     # 三变相关信息
     sanbian:
         # 土地确权接口
-        land:     http://114.215.158.181/CreditQingZhenData/web/v1/api/lcw/list
+        land:     http://58.42.227.135:4888/CreditQingZhenData/web/v1/api/lcw/list
         # 林地确权接口
-        woodland: http://114.215.158.181/CreditQingZhenData/web/v1/api/fpw/list
+        woodland: http://58.42.277.135:4888/CreditQingZhenData/web/v1/api/fpw/list
         # 房屋产权接口
-        housing:  http://114.215.158.181/CreditQingZhenData/web/v1/api/hpw/list
+        housing:  http://58.42.277.135:4888/CreditQingZhenData/web/v1/api/hpw/list
         # 请求超时时间(秒)
+        integrity:  http://58.42.227.135:4888/CreditQingZhen/web/app.php/v1/api/credit/2
         timeout: 10
 
 monolog:

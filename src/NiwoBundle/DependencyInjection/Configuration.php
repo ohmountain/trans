@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode("land")->isRequired()->end()
                 ->scalarNode("woodland")->isRequired()->end()
                 ->scalarNode("housing")->isRequired()->end()
+                ->scalarNode("integrity")->isRequired()->end()
                 ->integerNode("timeout")->min(1)->max(20)->end()
             ->end()
         ->end();
