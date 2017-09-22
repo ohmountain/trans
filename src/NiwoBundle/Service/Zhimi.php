@@ -624,7 +624,7 @@ class Zhimi
         $sanbian = $this->container->get("niwo.sanbian");
 
         /* 从三变平台获取信息 */
-        $result = $sanbian->land($id);
+        $result = $sanbian->landFromIntegrity($id);
 
         if ($result->error) {
             $data = [
@@ -641,26 +641,60 @@ class Zhimi
             return $response;
         }
 
-        $trans_data = $result->data;
+        $trans_data = $result->data[0];
 
         $owner_id = "";
 
+        if (is_array($trans_data) && $trans_data->id) {
+            $owner_id = "{$trans_data->id}";
+        }
+
         $ownership = [
-            "comm_name" => $trans_data->comm_name ?? "",
-            "comm_pp_name" => $trans_data->comm_pp_name ?? "",
-            "owner_name" => $trans_data->owner_name ?? "",
-            "owner_id" => $trans_data->owner_id ?? "",
-            "owner_gender" => $trans_data->owner_gender ?? "",
+            "comm_name" => $trans_data->village_committee ?? "",
+            "comm_pp_name" => $trans_data->village_group ?? "",
+            "owner_name" => $trans_data->householder_name ?? "",
+            "owner_id" => $owner_id,
+            "owner_gender" => $trans_data->householder_sex ?? "",
             "owner_contact" => "",  // 暂无
-            "owner_sid" => $trans_data->owner_sid ?? "",
-            "family_name" => $trans_data->family_name ?? "",
-            "family_gender" => $trans_data->family_gender ?? "",
-            "family_sid" => $trans_data->family_sid ?? "",
-            "relationship" => $trans_data->relationship ?? "",
-            "block" => $trans_data->block ?? []
+            "owner_sid" => $trans_data->id_care ?? "",
+            "family_name" => $trans_data->family[0]->name ?? "",
+            "family_gender" => $trans_data->family[0]->sex ?? "",
+            "family_sid" => $trans_data->family[0]->id_care ?? "",
+            "relationship" => $trans_data->family[0]->relationship ?? "",
+            "block" => []
         ];
 
         $rentals = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Rental")->findAll();
+
+        if (is_object($trans_data)) {
+            foreach ($trans_data->land as $block) {
+                $status = 1;
+                if ($block->usage_status != 1) {
+                    $status = 2;
+                }
+
+                $contract_id_hash = "";
+
+                foreach ($rentals as $r) {
+                    if ($r->getBlockNo() == $block->id) {
+                        $contract_id_hash = $r->getHash();
+                    }
+                }
+
+                $tmp = [
+                    "block_name" => $block->name ?? "",
+                    "block_area" => "{$block->area}" ?? "",
+                    "block_type" => $block->status,
+                    "block_no"   => "{$block->id}" ?? "",
+                    "block_coordinate" => $block->coordinate ?? "",
+                    "block_shape" => $block->shapes ?? "",
+                    "usage_status" => $status,          // 暂无
+                    "contract_id_hash" => $contract_id_hash      // 暂无
+                ];
+
+                array_push($ownership["block"], $tmp);
+            }
+        }
 
         $data = [
             'ret_code' => 0,
@@ -687,7 +721,7 @@ class Zhimi
      */
     private function woodlandRights(array $parameter): JsonResponse
     {
-        $response = new JsonResponse();
+                $response = new JsonResponse();
 
         /**
          * TODO
@@ -700,13 +734,23 @@ class Zhimi
         $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
-        $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
+        // $rep = $this->em->getRepository("NiwoBundle\Entity\WoodlandRights");
 
-        $rights = $rep->findByOwnerId($id);
+        // $rights = $rep->findByOwnerId($id);
+
+        // if ($rights === null) {
+        //     $response->setContent(json_encode([
+        //         'code' => 0,
+        //         'value' => null,
+        //         'reason_string' => "无数据"
+        //     ]));
+
+        //     return $response;
+        // }
 
         $data = [];
 
-        $result = $this->container->get("niwo.sanbian")->woodland($id);
+        $result = $this->container->get("niwo.sanbian")->woodlandFromIntegiry($id);
 
         if ($result->error) {
             $data = [
@@ -723,11 +767,36 @@ class Zhimi
             return $response;
         }
 
+        try {
+            foreach ($result->data  as $res) {
+                array_push($data, [
+                    "country_name" => $res->address ?? "",
+                    "comm_name"    => $res->village_committee ?? "",
+                    "comm_pp_name" => $res->village_committee ?? "",
+                    "owner_name"   => $res->householder_name ?? "",
+                    "east"         => $res->east ?? "",
+                    "south"        => $res->south ?? "",
+                    "west"         => $res->west ?? "",
+                    "north"        => $res->north ?? "",
+                    "woodland_id"  => "{$res->id}" ?? "",
+                    "map_author"   => $res->mapper ?? "",
+                    "land_name"    => $res->toponymy ?? "",
+                    // "tree_type"    => $res->tree_type,
+                    "tree_type"    => "",
+                    "valid"        => $res->trees_varieties ?? "",
+                    "authorized_date" => $res->date_issue ?? "",
+                    "processor"    => $res->responsible_person ?? ""
+                ]);
+            }
+        } catch (\Exception $e) {
+            $this->container->get("logger")->error("转换林权信息出错", ["message" => $e->getMessage()]);
+        }
+
         $response->setContent(json_encode([
             'code' => 0,
             'value' => [
                 'hash' => hash("sha256", hash("sha256", $id)),
-                "ownership" => $result->data
+                "ownership" => $data
             ]
         ]));
 
@@ -744,7 +813,6 @@ class Zhimi
      */
     private function housingPropertyRights(array $parameter): JsonResponse
     {
-
         $response = new JsonResponse();
 
         /**
@@ -758,7 +826,7 @@ class Zhimi
         $sig     = $parameter["sig"] ?? "";
         $hash    = hash("sha256", hash("sha256", "1".$id));
 
-        $res = $this->container->get("niwo.sanbian")->housing($id);
+        $res = $this->container->get("niwo.sanbian")->housingFromIntegrity($id);
 
         if ($res->error) {
             $response->setContent(json_encode([
@@ -770,81 +838,40 @@ class Zhimi
             return $response;
         }
 
+        $data = [];
 
-        // // 虚假数据，用于开发
-        // $data = [[
-        //     "address" => "贵阳市-花溪区-石板镇",
-        //     "comm_name" => "xxx村民委员会",
-        //     "comm_pp_name" => "xx组",
-        //     "east" => "防火墙",
-        //     "south" => "池塘",
-        //     "west" => "农田",
-        //     "north" => "公路",
-        //     "construction_area" => "123.23",
-        //     "house_area" => "234.02",
-        //     "owner_name" => "张三",
-        //     "house_style" => "砖瓦",
-        //     "authorized_date" => "20031020",
-        //     "authorized_dept" => "贵阳市房产局"
-        // ]];
+        if (is_array($res->data)) {
+            foreach ($res->data as $house) {
+                try {
+                    array_push($data, [
+                        "address" => $house->address,
+                        "comm_name" => $house->village_committee,
+                        "comm_pp_name" => $house->village_group,
+                        "east" => $house->east,
+                        "north" => $house->north,
+                        "west" => $house->west,
+                        "south" => $house->south,
+                        "construction_area" => $house->floor_area,
+                        "house_area" => $house->floor_space,
+                        "owner_name" => $house->householder_name,
+                        "house_style" => $house->structure,
+                        "authorized_date" => "",    // 暂无
+                        "authorized_dept" => "",    // 暂无
+                    ]);
+                } catch(\Exception $e) {
+                    $this->container->get("logger")->error("转换房屋产权信息出错", ["message" => $e->getMessage()]);
+                }
+            }
+        }
 
         $response->setContent(json_encode([
             'ret_code' => 0,
             'value' => [
                 'hash' => hash('sha256', hash('sha256', '1')),
-                'ownership' => $res->data
+                'ownership' => $data
             ],
             'reason_string' => '获取成功'
         ]));
-
-        // $rep = $this->em->getRepository("NiwoBundle\Entity\HousingPropertyRights");
-
-        // $rights = $rep->findByOwnerId($id);
-
-        // if ($rights === null) {
-        //     $response->setContent(json_encode([
-        //         "ret_value" => 1,
-        //         "value" => null,
-        //         "reason_string" => "无数据"
-        //     ]));
-
-        //     return $response;
-        // }
-
-
-        // $value = [];
-
-        // foreach ($rights as $right) {
-        //     $r = [
-        //         "address" => $rights->getAddress(),
-        //         "comm_name" => $rights->getCommName(),
-        //         "comm_pp_name" => $rights->getCommPpName(),
-        //         "east" => $rights->getEast(),
-        //         "south" => $rights->getSouth(),
-        //         "east" => $rights->getEast(),
-        //         "west" => $rights->getWest(),
-        //         "construct_area" => $rights->getConstructionArea(),
-        //         "house_area" => $rights->getHouseArea(),
-        //         "house_style" => $rights->getHouseStyle(),
-        //         "owner_name" => $rights->getOwnerName(),
-        //         "authorized_date" => $rights->getAuthorizedDate(),
-        //         "authorized_dept" => $rights->getAuthorizedDept()
-        //     ];
-
-        //     array_push($value, $r);
-        // }
-
-        // /**
-        //  * 假设获取成功
-        //  */
-        // $response->setContent(json_encode([
-        //     "ret_value" => 0,
-        //     "value" => [
-        //         "hash" => $rights->getOwnerIdHash(),
-        //         "ownership" => $value
-        //     ],
-        //     "ret_string" => "获取成功"
-        // ]));
 
         $this->sendCert("", $this->getDid($hash), $hash, ["woodlandrights"], "获取房屋产权信息", $sig);
 
@@ -1032,7 +1059,7 @@ class Zhimi
             "ret_code" => 0,
             "cert" => hash("sha256", uniqid()),
             "value" => [
-                "image" => "http://pic.qiantucdn.com/58pic/26/61/81/28658PICEQT_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw"
+                "image" => ""
             ],
             "reason_string" => "合同更改成功"
         ]));
@@ -1083,15 +1110,6 @@ class Zhimi
                 $img_info = getimagesize($image);
                 $img_src = "data:{$img_info['mime']};base64," . base64_encode(file_get_contents($image));
 
-                // if (isset($_SERVER['SERVER_ADDR'])) {
-                //     $url = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != null) ? "https://" : "http://") . "{$_SERVER['SERVER_ADDR']}".":{$_SERVER['SERVER_PORT']}".$image;
-                // } else {
-                //     $url = $image;
-                // }
-
-
-
-
                 $url = $img_src;
 
                 array_push($images, [
@@ -1121,7 +1139,6 @@ class Zhimi
 
 
         $data = [
-
             "ret_code" => 0,
 
             "value" => [
@@ -1215,6 +1232,19 @@ class Zhimi
             "value" => [ "hash" => $hash, "images" => $images ],
             "reason_string" => ""
         ]));
+
+        $curl = new Curl();
+
+        $url = $this->container->getParameter("niwo")["sanbian"]["land_status"];
+        $out = $this->container->getParameter("niwo")["sanbian"]["timeout"];
+        $url = "{$url}?id={$contract['block']['block_no']}&cert={$hash}&usage_status=1";
+
+        try {
+            $res = $curl->get($url);
+            dump($res);die;
+        } catch(\Exception $e) {
+            $this->container->get("logger")->error("修改土地状态失败", ["message" => $e->getManager()]);
+        }
 
         return $response;
     }
