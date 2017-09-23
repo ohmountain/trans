@@ -15,51 +15,50 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
 
-        // $data = $request->get("data");
+        $data = $request->get("data");
 
-        // $data = json_decode($data, true);
+        $data = json_decode($data, true);
 
-        // if (is_array($data)) {
-        //     $right = new LandRights();
+        if (is_array($data) && isset($data["comm_name"])) {
+            $right = new LandRights();
 
-        //     $right->setCommName($data["comm_name"]);
-        //     $right->setCommPpName($data["comm_pp_name"]);
-        //     $right->setOwnerId($data["owner_id"]);
-        //     $right->setOwnerName($data["owner_name"]);
-        //     $right->setOwnerGender($data["owner_gender"]);
-        //     $right->setOwnerContact($data["owner_contact"]);
-        //     $right->setOwnerSid($data["owner_sid"]);
-        //     $right->setFamilyName($data["family_name"]);
-        //     $right->setFamilyGender($data["family_gender"]);
-        //     $right->setFamilySid($data["family_sid"]);
-        //     $right->setRelationship($data["relationship"]);
+            $right->setCommName($data["comm_name"]);
+            $right->setCommPpName($data["comm_pp_name"]);
+            $right->setOwnerId($data["owner_id"]);
+            $right->setOwnerName($data["owner_name"]);
+            $right->setOwnerGender($data["owner_gender"]);
+            $right->setOwnerContact($data["owner_contact"]);
+            $right->setOwnerSid($data["owner_sid"]);
+            $right->setFamilyName($data["family_name"]);
+            $right->setFamilyGender($data["family_gender"]);
+            $right->setFamilySid($data["family_sid"]);
+            $right->setRelationship($data["relationship"]);
 
-        //     $em = $this->get("doctrine")->getManager();
-        //     $em->persist($right);
+            $em = $this->get("doctrine")->getManager();
+            $em->persist($right);
 
-        //     foreach ($data["block"] as $b) {
-        //         $block = new LandBlock();
+            foreach ($data["block"] as $b) {
+                $block = new LandBlock();
 
-        //         $block->setBlockName($b["block_name"]);
-        //         $block->setBlockArea($b["block_area"]);
-        //         $block->setBlockType($b["block_type"]);
-        //         $block->setBlockNo($b["block_no"]);
-        //         $block->setBlockCoordinate($b["block_coordinate"]);
-        //         $block->setBlockShape($b["block_shape"]);
-        //         $block->setUsageStatus($b["usage_status"]);
-        //         $block->setContractIdHash($b["contract_id_hash"]);
+                $block->setBlockName($b["block_name"]);
+                $block->setBlockArea($b["block_area"]);
+                $block->setBlockType($b["block_type"]);
+                $block->setBlockNo($b["block_no"]);
+                $block->setBlockCoordinate($b["block_coordinate"]);
+                $block->setBlockShape($b["block_shape"]);
+                $block->setUsageStatus($b["usage_status"]);
+                $block->setContractIdHash($b["contract_id_hash"]);
 
-        //         $block->setOwner($right);
+                $block->setOwner($right);
 
-        //         $contrct_id_hash = $this->get("niwo.zhimi")->sendCert("", "did:gyi:AV7hqKtn4tY3bghzVcBsRnRSaVSCwjnRAG", hash("sha256", json_encode($b)), ["土地权证信信息上链"], json_encode($b));
+                $contrct_id_hash = $this->get("niwo.zhimi")->sendCert("", "did:gyi:AV7hqKtn4tY3bghzVcBsRnRSaVSCwjnRAG", hash("sha256", json_encode($b)), ["土地权证信信息上链"], json_encode($b));
 
-        //         $block->setContractIdHash($contrct_id_hash);
-        //         $em->persist($block);
+                $block->setContractIdHash($contrct_id_hash);
+                $em->persist($block);
+            }
 
-        //     }
-
-        //     $em->flush();
-        // }
+            $em->flush();
+        }
 
         $data = [];
 
