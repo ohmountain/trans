@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Crate Integrity</title>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>创建诚信信息</h2>
+                <hr/>
+                <form>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <select name="name" id="name" class="form-control">
+                            <option value="张以华">张以华</option>
+                            <option value="杨秀才">杨秀才</option>
+                            <option value="凡祥华">凡祥华</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">分类</label>
+                        <select name="category" id="category" class="form-control">
+                            <option value="金融信用">金融信用</option>
+                            <option value="司法信用">司法信用</option>
+                            <option value="公共服务">公共服务</option>
+                            <option value="公共信用">公共分信用</option>
+                            <option value="其它">其它</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="place">位置</label>
+                        <input type="text" id="place" name="place" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">内容</label>
+                        <input type="text" id="content" name="content" class="form-control">
+                    </div>
+                    <button id="create"  type="button" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        window.addEventListener("load", e => {
+            var nameE = document.getElementById("name");
+            var cateE = document.getElementById("category");
+            var placeE = document.getElementById("place");
+            var contentE = document.getElementById("content");
+
+            var button = document.getElementById("create");
+
+
+            button.addEventListener("click", function() {
+                var name     = nameE.value;
+                var category = cateE.value;
+                var place    = placeE.value;
+                var content  = contentE.value;
+
+                var url = `/integrity/create?name=${name}&category=${category}&place=${place}&content=${content}`;
+
+                if (place.trim() == '' || content.trim()  == '') {
+                    alert("请输入位置或内容");
+                    return;
+                }
+
+                fetch(url).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(json => {
+                    if (json.ok == true) {
+                        alert("成功");
+                        window.location.reload();
+                    }
+                }).catch(e => {
+                    alert("创建失败");
+                });
+            });
+        });
+    </script>
+
+</html>

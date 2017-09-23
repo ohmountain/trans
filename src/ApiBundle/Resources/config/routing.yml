@@ -13,3 +13,13 @@ api_get_example:
     path:    /api/v1/example
     defaults: { _controller: ApiBundle:Api:example }
     methods: GET
+    
+api_create_integrity_view:
+    path:     /ccc
+    defaults: { _controller: ApiBundle:Default:createIntegrity }
+
+
+api_create_integrity:
+    path:     /integrity/create
+    defaults: { _controller: ApiBundle:Default:create }
+
