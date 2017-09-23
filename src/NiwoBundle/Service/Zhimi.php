@@ -1235,13 +1235,16 @@ class Zhimi
 
         $curl = new Curl();
 
+        $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
+
         $url = $this->container->getParameter("niwo")["sanbian"]["land_status"];
         $out = $this->container->getParameter("niwo")["sanbian"]["timeout"];
         $url = "{$url}?id={$contract['block']['block_no']}&cert={$hash}&usage_status=1";
 
+        $curl->setOpt(CURLOPT_TIMEOUT, $out);
+
         try {
             $res = $curl->get($url);
-            dump($res);die;
         } catch(\Exception $e) {
             $this->container->get("logger")->error("修改土地状态失败", ["message" => $e->getManager()]);
         }

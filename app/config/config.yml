@@ -106,7 +106,7 @@ niwo:
         # 诚信信息
         integrity: http://58.42.227.135:4888/CreditQingZhen/web/app.php/v1/api/credit/2
         # 更改地块状态
-        land_status: http://58.42.227.135:4888/CreditQingZhenData/web/app.php/v1/api/revise
+        land_status: http://58.42.227.135:4888/CreditQingZhenData/web/app.php/v1/api/land/revise
         # 请求超时时间(秒)
         timeout: 10
 
