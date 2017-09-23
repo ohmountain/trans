@@ -114,7 +114,7 @@ class DefaultController extends Controller
             $sid = "522502196501132652";
         }
 
-        $timestamp = range(1199116800, time(), 3600);
+        $timestamp = range(1199116800, time() - 3600 * 365, 3600);
         $time = $timestamp[array_rand($timestamp)];
 
         $time = date("Ymdhis", $time);
