@@ -4,8 +4,9 @@ namespace ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
+use ApiBundle\Service\Response;
 use NiwoBundle\Entity\LandBlock;
 use NiwoBundle\Entity\LandRights;
 use NiwoBundle\Entity\Integrity;
@@ -77,7 +78,7 @@ class DefaultController extends Controller
         $place = $request->get("place");
         $content = $request->get("content");
 
-        $response = new Response();
+        $response = new BaseResponse();
 
         if ($name == null || $category == null || $place == null || $content == null) {
             $response->setContent(json_encode([
