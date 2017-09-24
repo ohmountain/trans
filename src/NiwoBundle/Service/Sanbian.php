@@ -61,7 +61,7 @@ class Sanbian
         foreach ($p->getBlocks() as $block) {
             $data["block"][] = [
                 "block_name" => $block->getBlockName(),
-                "block_area" => round($block->getBlockArea(), 3),
+                "block_area" => number_format($block->getBlockArea(), 4),
                 "block_type" => $block->getBlockType(),
                 "block_no"   => $block->getBlockNo(),
                 "block_coordinate" => $block->getBlockCoordinate(),
@@ -168,7 +168,7 @@ class Sanbian
                 "west" => $h->getWest(),
                 "south" => $h->getSouth(),
                 "construction_area" => $h->getConstructionArea(),
-                "house_are" => round($h->getHouseArea(), 3),
+                "house_are" => number_format($h->getHouseArea(), 4),
                 "owner_name" => $h->getOwnerName(),
                 "house_style" => $h->getHouseStyle(),
                 "authorized_date" => $h->getAuthorizedDate(),

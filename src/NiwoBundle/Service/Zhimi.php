@@ -986,7 +986,7 @@ class Zhimi
             }
 
             $blocks["owner_name"] = $rental->getPartyaName();
-            $blocks["distribution"] = round($rental->getBlockArea() / $total_area, 4);
+            $blocks["distribution"] = number_format($rental->getBlockArea() / $total_area, 4);
             $blocks["usage_status"] = 1;
             $contract["block"] = $blocks;
 
@@ -1245,7 +1245,7 @@ class Zhimi
             "value" => [
                 "current" => $static,
                 "after" => $static + $area,
-                "percent" => round($area / ($static + $area), 4)
+                "percent" => number_format($area / ($static + $area), 4)
             ],
             "reason_string" => "获取成功"
         ]));
