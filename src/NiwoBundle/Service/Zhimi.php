@@ -1230,7 +1230,8 @@ class Zhimi
 
         $rentals = $this->container->get("doctrine")->getManager()->getRepository("NiwoBundle\Entity\Rental")->findAll();
 
-        $static = 0;
+        /* 已租赁 */
+        $static = 300;
 
         foreach ($rentals as $rental) {
             $static += $rental->getBlockArea();
@@ -1380,9 +1381,9 @@ class Zhimi
         $response->setContent(json_encode([
             "ret_code" => 0,
             "value" => [
-                "partyb_name" => "清镇市凤山土地林地股份合作社",
-                "partyb_id"   => "53421928103944",
-                "partyb_contact" => "085155554444"
+                "partyb_name" => "清镇市凤山果蔬种植农民专业合作社",
+                "partyb_id"   => "93520181596351871L",
+                "partyb_contact" => ""
             ]
         ]));
 
