@@ -979,7 +979,7 @@ class Zhimi
 
             $rentals = $rep->findAll();
 
-            $total_area = 0;
+            $total_area = 300;
 
             foreach ($rentals as $r) {
                 $total_area += $r->getBlockArea() ?? 0;
