@@ -104,41 +104,139 @@
 /* ] */;
 
 
+// $ownership = [
+//     "comm_name" => "清镇市卫城镇凤山村",
+//     "comm_pp_name" => "高山组",
+//     "owner_id" => "52018110221804003J",
+//     "owner_name" => "凡祥华",
+//     "owner_gender" => "男",
+//     "owner_contact" => "",
+//     "owner_sid" => "52250219650113652",
+//     "family_name" => "凡进",
+//     "family_gender" => "男",
+//     "family_sid" => "522502198707072617",
+//     "relationship" => "父子",
+//     "block" => [
+//         [ 
+//             "block_name" => "土进田",
+//             "block_area" => "2.03",
+//             "block_type" => "田",
+//             "block_no"   => "0013",
+//             "block_coordinate" => " ",
+//             "block_shape" => "不规则",
+//             "usage_status" => "2",
+//             "contract_id_hash" => ""
+//         ],
+//         [ 
+//             "block_name" => "哨树脚土",
+//             "block_area" => "0.81",
+//             "block_type" => "土",
+//             "block_no"   => "0014",
+//             "block_coordinate" => " ",
+//             "block_shape" => "不规则",
+//             "usage_status" => "2",
+//             "contract_id_hash" => ""
+//         ],
+//     ]
+// ];
+
 $ownership = [
     "comm_name" => "清镇市卫城镇凤山村",
     "comm_pp_name" => "高山组",
-    "owner_id" => "52018110221804003J",
-    "owner_name" => "凡祥华",
+    "owner_id" => "52018110221804009J",
+    "owner_name" => "杨秀才",
     "owner_gender" => "男",
     "owner_contact" => "",
-    "owner_sid" => "52250219650113652",
-    "family_name" => "凡进",
+    "owner_sid" => "522502196211282652",
+    "family_name" => "杨宝贵",
     "family_gender" => "男",
-    "family_sid" => "522502198707072617",
+    "family_sid" => "52250219940224632",
     "relationship" => "父子",
     "block" => [
-        [ 
-            "block_name" => "土进田",
-            "block_area" => "2.03",
-            "block_type" => "田",
-            "block_no"   => "0013",
-            "block_coordinate" => " ",
-            "block_shape" => "不规则",
-            "usage_status" => "2",
-            "contract_id_hash" => ""
-        ],
-        [ 
-            "block_name" => "哨树脚土",
-            "block_area" => "0.81",
+        [
+            "block_name" => "大麻窝土",
+            "block_area" => "2.69",
             "block_type" => "土",
-            "block_no"   => "0014",
+            "block_no"   => "0036",
             "block_coordinate" => " ",
             "block_shape" => "不规则",
             "usage_status" => "2",
             "contract_id_hash" => ""
         ],
+        [ 
+            "block_name" => "马槽土",
+            "block_area" => "5.01",
+            "block_type" => "土",
+            "block_no"   => "0037",
+            "block_coordinate" => " ",
+            "block_shape" => "不规则",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "河沙洞",
+            "block_area" => "1.84",
+            "block_type" => "土",
+            "block_no"   => "0038",
+            "block_coordinate" => " ",
+            "block_shape" => "不规则",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "马槽土",
+            "block_area" => "0.83",
+            "block_type" => "土",
+            "block_no"   => "0039",
+            "block_coordinate" => " ",
+            "block_shape" => "不规则",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "山门口坎土",
+            "block_area" => "5.11",
+            "block_type" => "土",
+            "block_no"   => "0040",
+            "block_coordinate" => " ",
+            "block_shape" => "不规则",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "竹林脚田",
+            "block_area" => "0.23",
+            "block_type" => "田",
+            "block_no"   => "0041",
+            "block_coordinate" => " ",
+            "block_shape" => "方型",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "付家门口土",
+            "block_area" => "1.95",
+            "block_type" => "土",
+            "block_no"   => "0042",
+            "block_coordinate" => " ",
+            "block_shape" => "方型",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ],
+        [
+            "block_name" => "沙河洞",
+            "block_area" => "1.65",
+            "block_type" => "土",
+            "block_no"   => "0043",
+            "block_coordinate" => " ",
+            "block_shape" => "",
+            "usage_status" => "2",
+            "contract_id_hash" => ""
+        ]
     ]
 ];
+
+
 
 
 
