@@ -1234,7 +1234,7 @@ class Zhimi
         $static = 300;
 
         foreach ($rentals as $rental) {
-            $static += $rental->getBlockArea();
+            $static += floatval($rental->getBlockArea());
         }
 
         $area = $parameter["area"];
@@ -1383,7 +1383,7 @@ class Zhimi
             "value" => [
                 "partyb_name" => "清镇市凤山果蔬种植农民专业合作社",
                 "partyb_id"   => "93520181596351871L",
-                "partyb_contact" => ""
+                "partyb_contact" => "13511954462"
             ]
         ]));
 
