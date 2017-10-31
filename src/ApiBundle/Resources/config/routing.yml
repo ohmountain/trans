@@ -23,3 +23,12 @@ api_create_integrity:
     path:     /integrity/create
     defaults: { _controller: ApiBundle:Default:create }
 
+
+api_createHousing:
+    path:     /housing
+    defaults: { _controller: ApiBundle:Default:createHousing }
+
+
+api_createWoodland:
+    path:     /woodland
+    defaults: { _controller: ApiBundle:Default:createWoodland }

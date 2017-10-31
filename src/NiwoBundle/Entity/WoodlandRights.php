@@ -148,6 +148,12 @@ class WoodlandRights
      */
     private $processor;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cert_hash", type="string", length=64, options={"comment": "存证hash"})
+     */
+    private $certHash;
 
     /**
      * Get id
@@ -589,5 +595,17 @@ class WoodlandRights
     public function getProcessor()
     {
         return $this->processor;
+    }
+
+    public function setCertHash($certHash)
+    {
+        $this->certHash = $certHash;
+
+        return $this;
+    }
+
+    public function getCertHash()
+    {
+        return $this->certHash;
     }
 }

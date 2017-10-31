@@ -122,7 +122,7 @@ class HousingPropertyRights
     /**
      * @var string
      *
-     * @ORM\Column(name="authorized_date", type="string", length=8, nullable=true, options={"comment":"发证日期"})
+     * @ORM\Column(name="authorized_date", type="string", length=32, nullable=true, options={"comment":"发证日期"})
      */
     private $authorizedDate;
 
@@ -133,6 +133,12 @@ class HousingPropertyRights
      */
     private $authorizedDept;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cert_hash", type="string", length=64, nullable=true, options={"comment":"存证hash"})
+     */
+    private $certHash;
 
     /**
      * Get id
@@ -526,5 +532,17 @@ class HousingPropertyRights
     public function getAuthorizedDept()
     {
         return $this->authorizedDept;
+    }
+
+    public function setCertHash($certHash)
+    {
+        $this->certHash = $certHash;
+
+        return $this;
+    }
+
+    public function getCertHash()
+    {
+        return $this->certHash;
     }
 }

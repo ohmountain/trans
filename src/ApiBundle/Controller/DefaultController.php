@@ -10,6 +10,8 @@ use ApiBundle\Service\Response;
 use NiwoBundle\Entity\LandBlock;
 use NiwoBundle\Entity\LandRights;
 use NiwoBundle\Entity\Integrity;
+use NiwoBundle\Entity\HousingPropertyRights;
+use NiwoBundle\Entity\WoodlandRights;
 
 class DefaultController extends Controller
 {
@@ -20,6 +22,7 @@ class DefaultController extends Controller
 
         $data = json_decode($data, true);
 
+        // 创建土地确权信息
         if (is_array($data) && isset($data["comm_name"])) {
             $right = new LandRights();
 
@@ -48,13 +51,12 @@ class DefaultController extends Controller
                 $block->setBlockCoordinate($b["block_coordinate"]);
                 $block->setBlockShape($b["block_shape"]);
                 $block->setUsageStatus($b["usage_status"]);
-                $block->setContractIdHash($b["contract_id_hash"]);
-
-                $block->setOwner($right);
 
                 $contrct_id_hash = $this->get("niwo.zhimi")->sendCert("", "did:gyi:AV7hqKtn4tY3bghzVcBsRnRSaVSCwjnRAG", hash("sha256", json_encode($b)), ["土地权证信信息上链"], json_encode($b));
 
                 $block->setContractIdHash($contrct_id_hash);
+                $block->setOwner($right);
+
                 $em->persist($block);
             }
 
@@ -65,6 +67,112 @@ class DefaultController extends Controller
 
         return Response::Json(Response::SUCCESS, "Welcom", true, $data);
     }
+
+
+    // 创建房屋产权信息
+    public function createHousingAction(Request $request)
+    {
+        $data = $request->get("data");
+        $data = json_decode($data, true);
+
+        if (is_array($data) && array_key_exists('property_number', $data)) {
+            $rights = new HousingPropertyRights();
+
+            $rights->setPropertyNumber($data['property_number']);
+            $rights->setOwnerName($data['owner_name']);
+            $rights->setOwnerId($data['owner_id']);
+            $rights->setOwnerIdHash(hash('sha256', hash('sha256', '1'.$data['owner_id'])));
+            $rights->setAddress($data['address']);
+            $rights->setCommName($data['comm_name']);
+            $rights->setCommPpName($data['comm_pp_name']);
+            $rights->setEast($data['east']);
+            $rights->setSouth($data['south']);
+            $rights->setWest($data['west']);
+            $rights->setNorth($data['north']);
+            $rights->setConstructionArea($data['construction_area']);
+            $rights->setHouseArea($data['house_area']);
+            $rights->setHouseStyle($data['house_style']);
+            $rights->setAuthorizedDept($data['authorized_dept']);
+            $rights->setAuthorizedDate($data['authorized_date']);
+
+            $cert_hash = $this->get("niwo.zhimi")->sendCert(
+                "",
+                "did:gyi:AV7hqKtn4tY3bghzVcBsRnRSaVSCwjnRAG",
+                hash("sha256", json_encode($data)),
+                ["房屋产权上链"],
+                json_encode($data)
+            );
+
+            $rights->setCertHash($cert_hash);
+
+            $err = null;
+
+            try {
+                $em = $this->get("doctrine")->getManager();
+                $em->persist($rights);
+                $em->flush();
+            } catch(\Exception $e) {
+                $err = $e->getMessage();
+            }
+
+        }
+
+        $data = [];
+        return Response::Json(Response::SUCCESS, "Welcom", true, ['data' => $rights ?? null, 'message' => $err ?? null]);
+    }
+
+    public function createWoodlandAction(Request $request)
+    {
+        $data = $request->get("data");
+        $data = json_decode($data, true);
+
+        if (is_array($data) && array_key_exists('country_name', $data)) {
+            $rights = new WoodlandRights();
+            $rights->setOwnerId($data['owner_id']);
+            $rights->SetOwnerIdHash(hash('sha256', hash('sha256', $data['owner_id'])));
+            $rights->setOwnerName($data['owner_name']);
+            $rights->setCountryName($data['country_name']);
+            $rights->setCommName($data['comm_name']);
+            $rights->setCommPpName($data['comm_pp_name']);
+            $rights->setEast($data['east']);
+            $rights->setWest($data['west']);
+            $rights->setSouth($data['south']);
+            $rights->setNorth($data['north']);
+            $rights->setWoodlandId($data['woodland_id']);
+            $rights->setArea($data['area']);
+            $rights->setMapAuthor($data['map_author']);
+            $rights->setLandName($data['land_name']);
+            $rights->setTreeType($data['tree_type']);
+            $rights->setValid($data['valid']);
+            $rights->setAuthorizedDate($data['authorized_date']);
+            $rights->setProcessor($data['processor']);
+
+            $cert_hash = $this->get("niwo.zhimi")->sendCert(
+                "",
+                "did:gyi:AV7hqKtn4tY3bghzVcBsRnRSaVSCwjnRAG",
+                hash("sha256", json_encode($data)),
+                ["林地确权上链"],
+                json_encode($data)
+            );
+
+            $rights->setCertHash($cert_hash);
+
+            $err = null;
+
+            try {
+                $em = $this->get("doctrine")->getManager();
+                $em->persist($rights);
+                $em->flush();
+            } catch(\Exception $e) {
+                $err = $e->getMessage();
+            }
+
+        }
+
+        $data = [];
+        return Response::Json(Response::SUCCESS, "Welcom", true, ['data' => isset($rights) ? $rights->getId() : null,  'message' => $err ?? null]);
+    }
+
 
     public function createIntegrityAction(Request $request)
     {
