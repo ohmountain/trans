@@ -42,10 +42,10 @@ class Zhimi
          * 没有对应的操作类型
          * ret_code 40400
          */
-        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])) {
+        if (!in_array($request_data["op_type"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])) {
             $response->setContent(json_encode([
                 "ret_code" => 40400,
-                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
+                "reason_string" => "没有对应的操作类型,操作类型为[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"
             ]));
 
             return $response;
@@ -190,6 +190,14 @@ class Zhimi
 
         if ($op_type == 13) {
             return $this->getPartyB();
+        }
+
+        if ($op_type == 14) {
+            return $this->getCreditScore($parameter);
+        }
+
+        if ($op_type == 15) {
+            return $this->getDiscounts($parameter);
         }
     }
 
@@ -1390,4 +1398,123 @@ class Zhimi
         return $response;
     }
 
+    public function getCreditScore(array $parameter)
+    {
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? "";
+        $hash    = hash("sha256", hash("sha256", "1".$id));
+
+        $response = new JsonResponse();
+
+        $timeout = $this->container->getParameter('niwo')['sanbian']['timeout'];
+        $api     = $this->container->getParameter('niwo')['sanbian']['credit'];
+
+        $curl = new Curl();
+        $curl->setOpt(CURLOPT_TIMEOUT, $timeout);
+
+
+        try {
+            $result = $curl->get("$api?sig=$id");
+
+            if ($result->error || $result->http_error) {
+                $response->setContent(json_encode([
+                    "ret_code" => 500,
+                    "value" => null,
+                    "reason_string" => "网络错误",
+                ]));
+
+                $this->container->get('logger')->error("获取诚信分失败", ['detail' => $result]);
+                return $response;
+            }
+        } catch(\Exception $e) {
+            $this->container->get('logger')->error("获取诚信分失败", ['detail' => $e]);
+        }
+
+
+        $this->sendCert("", $this->getDid($hash), $hash, ["获取诚信分"], "获取诚信分", $sig);
+
+        $data= json_decode($result->response, true);
+
+        if ($data['ret_code'] !== 0) {
+            $response->setContent(json_encode([
+                'ret_code' => $data['ret_code'],
+                'value' => null,
+                "reason_string" => $data['reason_string']
+            ]));
+
+            return $response;
+        }
+
+        $response->setContent(json_encode([
+            'ret_code' => 0,
+            'value' => [
+                'score' => $data['value']
+            ],
+            'reason_string' => ''
+        ]));
+
+        return $response;
+    }
+
+    public function getDiscounts(array $parameter)
+    {
+        $id      = $parameter["id"];
+        $sig     = $parameter["sig"] ?? "";
+        $hash    = hash("sha256", hash("sha256", "1".$id));
+
+        $response = new JsonResponse();
+
+        $timeout = $this->container->getParameter('niwo')['sanbian']['timeout'];
+        $api     = $this->container->getParameter('niwo')['sanbian']['discounts'];
+
+        $curl = new Curl();
+        $curl->setOpt(CURLOPT_TIMEOUT, $timeout);
+
+
+        try {
+            $result = $curl->get("$api?sig=$id&status=1");
+
+            if ($result->error || $result->http_error) {
+                $response->setContent(json_encode([
+                    "ret_code" => 500,
+                    "value" => null,
+                    "reason_string" => "网络错误",
+                ]));
+
+                $this->container->get('logger')->error("获取优惠政策分失败", ['detail' => $result]);
+                return $response;
+            }
+        } catch(\Exception $e) {
+            $this->container->get('logger')->error("获取优惠政策失败", ['detail' => $e]);
+        }
+
+
+        $this->sendCert("", $this->getDid($hash), $hash, ["获取优惠政策"], "获取优惠政策", $sig);
+
+        $data= json_decode($result->response, true);
+
+        if ($data['ret_code'] !== 0) {
+            $response->setContent(json_encode([
+                'ret_code' => $data['ret_code'],
+                'value' => null,
+                "reason_string" => $data['reason_string']
+            ]));
+
+            return $response;
+        }
+
+        $response->setContent(json_encode([
+            'ret_code' => 0,
+            'value' => [
+                'discounts' => $data['value']
+            ],
+            'reason_string' => ''
+        ]));
+
+        return $response;
+    }
 }
+
+
+
+

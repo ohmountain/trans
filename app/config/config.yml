@@ -93,7 +93,7 @@ niwo:
         block_info_api: http://10.20.41.101:9080/api/v1/block
         # block_info_api: http://172.16.253.62:7171/api/v1/block
         # 请求超时时间(秒)
-        timeout: 10
+        timeout: 1
 
     # 三变相关信息
     sanbian:
@@ -103,7 +103,10 @@ niwo:
         woodland: http://114.215.158.181/CreditQingZhenData/web/v1/api/fpw/list
         # 房屋产权接口
         housing:  http://114.215.158.181/CreditQingZhenData/web/v1/api/hpw/list
+        # 诚信分接口
+        credit:   http://58.42.227.135:4888/CreditQingZhen/web/v1/api/personal/score
         # 请求超时时间(秒)
+        discounts: http://58.42.227.135:4888/CreditQingZhen/web/v1/api/personal/policy
         timeout: 10
 
 monolog:
